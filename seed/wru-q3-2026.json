@@ -1,0 +1,70 @@
+{
+ "title": "WRU Third Quarter Report, July–September 2026",
+ "kind": "unit",
+ "unit": "WRU",
+ "period": {
+  "label": "Q3 2026",
+  "year": 2026,
+  "quarter": 3,
+  "start": "2026-07-01",
+  "end": "2026-09-30"
+ },
+ "fileName": "WRU-_3rd_Quarter_Report_July-_September_2026.docx",
+ "summary": "The Waste and Remediation Unit received 17 waste management applications, answered 15 and issued 4 certificates, while assessing service providers and joining ESIA site verifications.",
+ "headline": [
+  {
+   "label": "Waste applications received",
+   "value": 17,
+   "note": "3 July · 7 August · 7 September",
+   "unit": "WRU"
+  },
+  {
+   "label": "Certificates issued",
+   "value": 4,
+   "note": "North Star, Numbers Group, Universal Impex, GIGAS",
+   "unit": "WRU"
+  }
+ ],
+ "kpis": [],
+ "series": [
+  {
+   "unit": "WRU",
+   "label": "Waste applications received",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 17
+    }
+   ]
+  }
+ ],
+ "breakdowns": [],
+ "studies": [],
+ "readings": [],
+ "activities": [
+  {
+   "date": "2026-09-12",
+   "unit": "WRU",
+   "title": "Scoping mission on waste and the circular economy with UNOSD and Korea Environment Corporation",
+   "place": "Monrovia",
+   "county": "Montserrado",
+   "type": "meeting"
+  },
+  {
+   "date": "2026-08-20",
+   "unit": "WRU",
+   "title": "Five-day LWSC training workshop",
+   "place": "Monrovia",
+   "county": "Montserrado",
+   "type": "training"
+  }
+ ],
+ "places": [],
+ "highlights": [
+  "WRU: application volume more than doubled from July (3) to August and September (7 each)"
+ ],
+ "challenges": [],
+ "actions": [],
+ "about": null,
+ "id": "wru-q3-2026"
+}

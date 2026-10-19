@@ -1,0 +1,50 @@
+name: Build Windows app
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build the installer and portable app
+        run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Read version
+        id: v
+        shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: ERRS Lab Wall ${{ steps.v.outputs.version }} (build ${{ github.run_number }})
+          make_latest: true
+          body: |
+            **Install on Windows:** download `ERRS-Lab-Wall-Setup-${{ steps.v.outputs.version }}.exe` below and run it.
+            If Windows shows "Windows protected your PC", click **More info → Run anyway** (the app is not code-signed).
+
+            No installation rights? Use `ERRS-Lab-Wall-Portable-${{ steps.v.outputs.version }}.exe` instead — it runs without installing.
+
+            Commit: ${{ github.sha }}
+          files: |
+            dist/ERRS-Lab-Wall-Setup-*.exe
+            dist/ERRS-Lab-Wall-Portable-*.exe

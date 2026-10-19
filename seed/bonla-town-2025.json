@@ -1,0 +1,610 @@
+{
+ "title": "Bonla Town AML Pollution Investigation",
+ "kind": "investigation",
+ "unit": "EMRU",
+ "period": {
+  "label": "Nov 2025",
+  "year": 2025,
+  "quarter": 4,
+  "start": "2025-11-06",
+  "end": "2025-11-08"
+ },
+ "fileName": "Official_AML_Bonlah_report_V6.pdf",
+ "summary": "Consolidated investigation of the Mount Yuelliton overburden slide: sediment-laden water from the Viellie River carried iron, aluminium, bismuth, chromium, copper, lead and manganese above Liberian standards into the Gbai River, with the Golay River as control.",
+ "headline": [
+  {
+   "label": "Gbai River samples",
+   "value": 14,
+   "note": "12 impacted · upstream · control",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Iron at the first impacted point",
+   "value": 3.19,
+   "note": "mg/L · control 0.37",
+   "unit": "EMRU"
+  }
+ ],
+ "kpis": [],
+ "series": [],
+ "breakdowns": [],
+ "studies": [
+  {
+   "title": "Gbai River surface water after the Yuelliton slide",
+   "place": "Bonla Town, Nimba County",
+   "date": "2025-11-07",
+   "matrix": "surface water",
+   "standard": "Liberian water quality standards",
+   "note": "Means of triplicate readings; turbidity has no national guideline",
+   "kind": "lab",
+   "params": [
+    {
+     "name": "Aluminium (Al)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.75
+    },
+    {
+     "name": "Bismuth (Bi)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.7
+    },
+    {
+     "name": "Iron (Fe)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 2
+    },
+    {
+     "name": "Arsenic (As)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.1
+    },
+    {
+     "name": "Selenium (Se)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.01
+    },
+    {
+     "name": "Boron (B)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Cadmium (Cd)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.01
+    },
+    {
+     "name": "Chromium (Cr)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 2
+    },
+    {
+     "name": "Copper (Cu)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Lead (Pb)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.01
+    },
+    {
+     "name": "Manganese (Mn)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Zinc (Zn)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "pH",
+     "unit": "",
+     "min": 6.5,
+     "max": 8.5
+    },
+    {
+     "name": "Electrical conductivity",
+     "unit": "µS/cm",
+     "min": null,
+     "max": 150
+    },
+    {
+     "name": "Total suspended solids",
+     "unit": "mg/L",
+     "min": null,
+     "max": 50
+    },
+    {
+     "name": "Turbidity",
+     "unit": "NTU",
+     "min": null,
+     "max": null
+    },
+    {
+     "name": "Total dissolved solids",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1000
+    },
+    {
+     "name": "Hardness (CaCO3)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 200
+    },
+    {
+     "name": "Nitrite (NO2)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 3
+    },
+    {
+     "name": "Phosphate",
+     "unit": "mg/L",
+     "min": null,
+     "max": 5
+    },
+    {
+     "name": "Sulfate",
+     "unit": "mg/L",
+     "min": null,
+     "max": 250
+    }
+   ],
+   "rows": [
+    {
+     "code": "GR-SW-001",
+     "label": "Gbai River point 1",
+     "lat": 7.573784,
+     "lon": -8.662364,
+     "control": false,
+     "values": [
+      0.89,
+      0.89,
+      3.19,
+      0.057,
+      0.059,
+      1.108,
+      0.007,
+      2.201,
+      1.688,
+      0.035,
+      1.34,
+      1.233,
+      6.33,
+      133.0,
+      77.2,
+      166.07,
+      144.0,
+      109.0,
+      0.08,
+      1.47,
+      25.72
+     ]
+    },
+    {
+     "code": "GR-SW-002",
+     "label": "Gbai River point 2",
+     "lat": 7.573017,
+     "lon": -8.664785,
+     "control": false,
+     "values": [
+      0.87,
+      0.85,
+      3.17,
+      0.055,
+      0.055,
+      1.099,
+      0.005,
+      2.197,
+      1.653,
+      0.033,
+      1.31,
+      1.229,
+      6.48,
+      128.0,
+      75.78,
+      160.7,
+      140.0,
+      106.0,
+      0.08,
+      1.5,
+      24.75
+     ]
+    },
+    {
+     "code": "GR-SW-003",
+     "label": "Gbai River point 3",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.84,
+      0.84,
+      3.08,
+      0.053,
+      0.053,
+      1.109,
+      0.005,
+      2.116,
+      1.608,
+      0.032,
+      1.29,
+      1.21,
+      6.46,
+      127.0,
+      75.85,
+      155.9,
+      136.0,
+      104.0,
+      0.06,
+      1.55,
+      24.7
+     ]
+    },
+    {
+     "code": "GR-SW-004",
+     "label": "Gbai River point 4",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.81,
+      0.82,
+      2.99,
+      0.051,
+      0.05,
+      1.163,
+      0.005,
+      2.109,
+      1.605,
+      0.029,
+      1.26,
+      1.175,
+      6.48,
+      127.0,
+      75.65,
+      150.8,
+      133.0,
+      107.0,
+      0.05,
+      1.45,
+      24.65
+     ]
+    },
+    {
+     "code": "GR-SW-005",
+     "label": "Gbai River point 5",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.81,
+      0.82,
+      2.97,
+      0.048,
+      0.05,
+      1.075,
+      0.007,
+      2.101,
+      1.552,
+      0.025,
+      1.21,
+      1.113,
+      6.44,
+      127.0,
+      75.6,
+      140.4,
+      138.0,
+      105.0,
+      0.04,
+      1.5,
+      24.6
+     ]
+    },
+    {
+     "code": "GR-SW-006",
+     "label": "Gbai River point 6",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.79,
+      0.8,
+      2.87,
+      0.031,
+      0.048,
+      1.022,
+      0.005,
+      2.003,
+      1.506,
+      0.023,
+      1.18,
+      1.118,
+      6.44,
+      120.0,
+      75.55,
+      135.7,
+      132.0,
+      104.0,
+      0.06,
+      1.4,
+      24.55
+     ]
+    },
+    {
+     "code": "GR-SW-007",
+     "label": "Gbai River point 7",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.77,
+      0.77,
+      2.81,
+      0.03,
+      0.042,
+      0.973,
+      0.005,
+      2.009,
+      1.458,
+      0.025,
+      1.1,
+      1.097,
+      6.46,
+      120.0,
+      75.5,
+      105.9,
+      141.0,
+      103.0,
+      0.05,
+      1.35,
+      24.5
+     ]
+    },
+    {
+     "code": "GR-SW-008",
+     "label": "Gbai River point 8",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.79,
+      0.73,
+      2.19,
+      0.025,
+      0.04,
+      0.997,
+      0.005,
+      2.002,
+      1.009,
+      0.02,
+      1.05,
+      1.005,
+      6.43,
+      117.0,
+      75.81,
+      90.53,
+      131.0,
+      95.0,
+      0.04,
+      1.3,
+      24.78
+     ]
+    },
+    {
+     "code": "GR-SW-009",
+     "label": "Gbai River point 9",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.77,
+      0.7,
+      2.11,
+      0.022,
+      0.039,
+      0.916,
+      0.004,
+      1.974,
+      1.053,
+      0.012,
+      1.04,
+      1.073,
+      6.48,
+      113.0,
+      75.8,
+      83.45,
+      137.0,
+      97.0,
+      0.06,
+      1.41,
+      24.8
+     ]
+    },
+    {
+     "code": "GR-SW-010",
+     "label": "Gbai River point 10",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.75,
+      0.7,
+      2.09,
+      0.022,
+      0.033,
+      0.73,
+      0.007,
+      1.966,
+      1.033,
+      0.013,
+      1.02,
+      1.002,
+      6.42,
+      125.0,
+      75.95,
+      71.89,
+      13.0,
+      99.0,
+      0.07,
+      1.43,
+      24.84
+     ]
+    },
+    {
+     "code": "GR-SW-011",
+     "label": "Gbai River point 11",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.75,
+      0.69,
+      2.13,
+      0.016,
+      0.021,
+      0.773,
+      0.001,
+      1.753,
+      1.083,
+      0.014,
+      1.08,
+      1.053,
+      6.41,
+      106.0,
+      70.88,
+      72.84,
+      130.0,
+      99.0,
+      0.07,
+      1.44,
+      25.85
+     ]
+    },
+    {
+     "code": "GR-SW-012",
+     "label": "Gbai River point 12",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.65,
+      0.61,
+      1.99,
+      0.01,
+      0.0009,
+      0.719,
+      0.001,
+      1.639,
+      0.96,
+      0.009,
+      0.61,
+      0.712,
+      6.53,
+      92.0,
+      45.06,
+      69.95,
+      113.0,
+      75.0,
+      1.63,
+      2.17,
+      15.53
+     ]
+    },
+    {
+     "code": "GR-US-SW-001",
+     "label": "Gbai River upstream",
+     "lat": null,
+     "lon": null,
+     "control": false,
+     "values": [
+      0.65,
+      0.63,
+      1.96,
+      0.01,
+      0.0005,
+      0.663,
+      0.001,
+      1.139,
+      0.935,
+      0.007,
+      0.55,
+      0.552,
+      6.57,
+      90.0,
+      44.97,
+      64.22,
+      101.0,
+      71.0,
+      1.99,
+      2.35,
+      3.44
+     ]
+    },
+    {
+     "code": "GR-C-SW-001",
+     "label": "Golay River control",
+     "lat": 7.573588,
+     "lon": -8.666344,
+     "control": true,
+     "values": [
+      0.09,
+      0.13,
+      0.37,
+      0.1,
+      0.005,
+      0.186,
+      "<0.001",
+      0.119,
+      0.066,
+      0.005,
+      0.004,
+      0.386,
+      6.59,
+      37.0,
+      44.77,
+      10.83,
+      10.0,
+      65.0,
+      3.28,
+      5.55,
+      10.85
+     ]
+    }
+   ]
+  }
+ ],
+ "readings": [],
+ "activities": [],
+ "places": [
+  {
+   "name": "Bonla Town",
+   "county": "Nimba",
+   "lat": 7.57845,
+   "lon": -8.659424,
+   "kind": "investigation"
+  }
+ ],
+ "highlights": [
+  "Bonla Town: lead up to 3.5× the 0.01 mg/L standard in the Gbai River after the Yuelliton slide"
+ ],
+ "challenges": [],
+ "actions": [],
+ "about": null,
+ "id": "bonla-town-2025"
+}

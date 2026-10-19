@@ -1,0 +1,5 @@
+node_modules/
+dist/
+renderer/index.html
+renderer/app.js
+*.log

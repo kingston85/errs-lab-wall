@@ -1,0 +1,80 @@
+{
+  "name": "errs-lab-wall",
+  "productName": "ERRS Lab Wall",
+  "version": "1.0.0",
+  "description": "Big-screen display of the ERRS Department's laboratory work, built from its reports",
+  "author": "Sahr Emmanuel, ERRS Department, EPA Liberia",
+  "license": "UNLICENSED",
+  "main": "main.js",
+  "scripts": {
+    "start": "node tools/build-renderer.js && electron .",
+    "dist": "node tools/build-renderer.js && electron-builder --win --publish never",
+    "build": "node tools/build-renderer.js"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "5.1.0",
+    "@fontsource/ibm-plex-mono": "5.1.0",
+    "@fontsource/ibm-plex-sans": "5.1.0",
+    "jszip": "3.10.1",
+    "pdfjs-dist": "3.11.174"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "lr.epa.errs.labwall",
+    "productName": "ERRS Lab Wall",
+    "copyright": "ERRS Department, EPA Liberia",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "seed/**",
+      "build/icon.png",
+      "!node_modules/pdfjs-dist/legacy/**",
+      "!node_modules/pdfjs-dist/types/**",
+      "!node_modules/pdfjs-dist/web/**",
+      "!**/*.map"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "ERRS-Lab-Wall-${version}-${arch}-${target}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "ERRS Lab Wall",
+      "artifactName": "ERRS-Lab-Wall-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "ERRS-Lab-Wall-Portable-${version}.${ext}"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingston85/errs-lab-wall.git"
+  },
+  "homepage": "https://github.com/kingston85/errs-lab-wall"
+}

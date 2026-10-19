@@ -1,0 +1,1438 @@
+{
+ "title": "ERRS Consolidated Third Quarter Report 2026",
+ "kind": "quarterly",
+ "unit": "ERRS",
+ "period": {
+  "label": "Q3 2026",
+  "year": 2026,
+  "quarter": 3,
+  "start": "2026-07-01",
+  "end": "2026-09-30"
+ },
+ "fileName": "ERRS-Consolidated-Third-Quarter-Report-2026.pdf",
+ "summary": "A quarter of sustained regulatory and field activity: CMU answered all 38 applications and issued 35 instruments, EMRU ran its busiest field quarter with 91 investigations, RSU validated the draft Radiation Safety Law, and WRU took 17 waste applications. Vehicles, PPE, computers and staff remain the main constraints.",
+ "headline": [
+  {
+   "label": "Environmental investigations",
+   "value": 91,
+   "note": "EMRU, Q3 · 208 so far in 2026",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Environmental media analysed",
+   "value": 91,
+   "note": "soil, water and air",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Regulatory instruments issued",
+   "value": 35,
+   "note": "CMU · 38 of 38 applications answered",
+   "unit": "CMU"
+  },
+  {
+   "label": "Trucks escorted",
+   "value": 88,
+   "note": "explosives, ferric chloride, ammonium nitrate",
+   "unit": "CMU"
+  },
+  {
+   "label": "Radiation licences issued",
+   "value": 10,
+   "note": "7 importation · 3 possess and use",
+   "unit": "RSU"
+  },
+  {
+   "label": "Waste applications",
+   "value": 17,
+   "note": "15 answered · 4 certificates",
+   "unit": "WRU"
+  },
+  {
+   "label": "Sachet water certificates",
+   "value": 11,
+   "note": "35 applications received",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Complaints investigated",
+   "value": 6,
+   "note": "3 about noise",
+   "unit": "EMRU"
+  }
+ ],
+ "kpis": [
+  {
+   "no": 1,
+   "unit": "RSU",
+   "name": "Radiation Safety (Nuclear) Act developed and legislated",
+   "target": null,
+   "targetLabel": "1 Act",
+   "achieved": null,
+   "note": "Draft law validated in Q3; inspection manual and 5 checklists drafted",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 2,
+   "unit": "RSU",
+   "name": "Basic radiation training for radiographers and radiation workers",
+   "target": 100,
+   "targetLabel": "100 workers",
+   "achieved": 0,
+   "q1": 0,
+   "q2": 0,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 3,
+   "unit": "EMRU",
+   "name": "Equip central laboratory and mobile laboratory",
+   "target": null,
+   "targetLabel": "1 lab + 1 mobile lab",
+   "achieved": null,
+   "note": "Ongoing",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 4,
+   "unit": "CMU",
+   "name": "Nationwide chemical inventory at industrial facilities",
+   "target": 60,
+   "targetLabel": "60 facilities",
+   "achieved": 1,
+   "q1": 0,
+   "q2": 1,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 5,
+   "unit": "EMRU",
+   "name": "Hire laboratory technicians, QC officers and supervisors",
+   "target": null,
+   "targetLabel": "6 staff",
+   "achieved": null,
+   "note": "Ongoing",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 6,
+   "unit": "RSU",
+   "name": "Nationwide inventory of radiation sources",
+   "target": 50,
+   "targetLabel": "50 facilities",
+   "achieved": 11,
+   "q1": 0,
+   "q2": 11,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 7,
+   "unit": "CMU",
+   "name": "Chemical registration and importation licences",
+   "target": 60,
+   "targetLabel": "60 proponents",
+   "achieved": 69,
+   "q1": 47,
+   "q2": 14,
+   "q3": 8,
+   "q4": null
+  },
+  {
+   "no": 8,
+   "unit": "EMRU",
+   "name": "Analytical laboratories accredited",
+   "target": 12,
+   "targetLabel": "12 laboratories",
+   "achieved": 7,
+   "q1": 0,
+   "q2": 6,
+   "q3": 1,
+   "q4": null
+  },
+  {
+   "no": 9,
+   "unit": "CMU",
+   "name": "Annual effluent discharge licences",
+   "target": 30,
+   "targetLabel": "30 proponents",
+   "achieved": 13,
+   "q1": 4,
+   "q2": 4,
+   "q3": 5,
+   "q4": null
+  },
+  {
+   "no": 10,
+   "unit": "EMRU",
+   "name": "Analyse environmental media (water, soil, air, noise)",
+   "target": null,
+   "targetLabel": "All required facilities",
+   "achieved": 108,
+   "note": "108 lab results; 201 investigations",
+   "q1": 53,
+   "q2": 36,
+   "q3": 19,
+   "q4": null
+  },
+  {
+   "no": 11,
+   "unit": "EMRU",
+   "name": "Review and validate the 2022 Environmental Inspection Manual",
+   "target": null,
+   "targetLabel": "1 manual",
+   "achieved": null,
+   "note": "Ongoing",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 12,
+   "unit": "EMRU",
+   "name": "Environmental monitoring reports reviewed",
+   "target": 100,
+   "targetLabel": "100 proponents",
+   "achieved": 87,
+   "q1": 34,
+   "q2": 27,
+   "q3": 26,
+   "q4": null
+  },
+  {
+   "no": 13,
+   "unit": "ERRS",
+   "name": "Research in two thematic areas and publish findings",
+   "target": null,
+   "targetLabel": "2 thematic areas",
+   "achieved": 208,
+   "note": "208 investigations; no publication yet",
+   "q1": 51,
+   "q2": 66,
+   "q3": 91,
+   "q4": null
+  },
+  {
+   "no": 14,
+   "unit": "CMU",
+   "name": "Chemical disposal licences",
+   "target": 5,
+   "targetLabel": "5 proponents",
+   "achieved": 0,
+   "q1": 0,
+   "q2": 0,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 15,
+   "unit": "CMU",
+   "name": "Fumigation licences",
+   "target": 10,
+   "targetLabel": "10 proponents",
+   "achieved": 8,
+   "q1": 4,
+   "q2": 3,
+   "q3": 1,
+   "q4": null
+  },
+  {
+   "no": 16,
+   "unit": "CMU",
+   "name": "Licences to chemical transport firms",
+   "target": 4,
+   "targetLabel": "4 firms",
+   "achieved": 6,
+   "q1": 3,
+   "q2": 1,
+   "q3": 2,
+   "q4": null
+  },
+  {
+   "no": 17,
+   "unit": "CMU",
+   "name": "Polluted sites restored or remediated",
+   "target": 5,
+   "targetLabel": "5 sites",
+   "achieved": 3,
+   "note": "Sethi Ferro Fabrik; Bomi Highway spill; gold mine, Upper Montserrado / Lower Margibi",
+   "q1": 0,
+   "q2": 1,
+   "q3": 2,
+   "q4": null
+  },
+  {
+   "no": 18,
+   "unit": "ERRS",
+   "name": "Training sessions for chemical handlers and first responders",
+   "target": 2,
+   "targetLabel": "2 sessions",
+   "achieved": 0,
+   "q1": 0,
+   "q2": 0,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 19,
+   "unit": "ERRS",
+   "name": "Automated database system for the ERRS laboratory",
+   "target": null,
+   "targetLabel": "1 system",
+   "achieved": null,
+   "note": "Cloud database set up; RAIS issues resolved",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 20,
+   "unit": "CMU",
+   "name": "Training of fumigation applicators",
+   "target": null,
+   "targetLabel": "All applicators",
+   "achieved": 1,
+   "note": "1 training, Bong County (April)",
+   "q1": 0,
+   "q2": 1,
+   "q3": 0,
+   "q4": null
+  },
+  {
+   "no": 21,
+   "unit": "EMRU",
+   "name": "Annual certification of sachet water factories",
+   "target": null,
+   "targetLabel": "All producers",
+   "achieved": 86,
+   "note": "122 certificates printed, 86 issued",
+   "q1": 43,
+   "q2": 32,
+   "q3": 11,
+   "q4": null
+  },
+  {
+   "no": 22,
+   "unit": "WRU",
+   "name": "Mapping and registration of waste generators and providers",
+   "target": 150,
+   "targetLabel": "150 (100 generators, 50 providers)",
+   "achieved": 43,
+   "q1": 0,
+   "q2": 26,
+   "q3": 17,
+   "q4": null
+  },
+  {
+   "no": 23,
+   "unit": "WRU",
+   "name": "Environmental monitoring at waste facilities",
+   "target": null,
+   "targetLabel": "50 facilities",
+   "achieved": null,
+   "note": "Ongoing assessments and ESIA site verifications",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 24,
+   "unit": "WRU",
+   "name": "Public awareness campaigns on waste segregation and disposal",
+   "target": null,
+   "targetLabel": "5 campaigns",
+   "achieved": null,
+   "note": "Several events attended",
+   "q1": null,
+   "q2": null,
+   "q3": null,
+   "q4": null
+  },
+  {
+   "no": 25,
+   "unit": "WRU",
+   "name": "Waste management licences to service providers",
+   "target": 50,
+   "targetLabel": "50 providers",
+   "achieved": 15,
+   "q1": 0,
+   "q2": 11,
+   "q3": 4,
+   "q4": null
+  }
+ ],
+ "series": [
+  {
+   "unit": "EMRU",
+   "label": "Environmental investigations",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 51
+    },
+    {
+     "period": "Q2 2026",
+     "value": 66
+    },
+    {
+     "period": "Q3 2026",
+     "value": 91
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Environmental quality analyses",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 53
+    },
+    {
+     "period": "Q2 2026",
+     "value": 36
+    },
+    {
+     "period": "Q3 2026",
+     "value": 91
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Laboratory results processed",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 53
+    },
+    {
+     "period": "Q2 2026",
+     "value": 36
+    },
+    {
+     "period": "Q3 2026",
+     "value": 19
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Monitoring reports reviewed",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 34
+    },
+    {
+     "period": "Q2 2026",
+     "value": 27
+    },
+    {
+     "period": "Q3 2026",
+     "value": 26
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Sachet water applications",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 84
+    },
+    {
+     "period": "Q2 2026",
+     "value": 31
+    },
+    {
+     "period": "Q3 2026",
+     "value": 35
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Sachet water certificates issued",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 43
+    },
+    {
+     "period": "Q2 2026",
+     "value": 32
+    },
+    {
+     "period": "Q3 2026",
+     "value": 11
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "label": "Laboratory accreditations",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 0
+    },
+    {
+     "period": "Q2 2026",
+     "value": 6
+    },
+    {
+     "period": "Q3 2026",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical registration licences",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical importation licences",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 5
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Effluent discharge licences",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 5
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical release / clearances",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 19
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Fumigation licences",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Transport licences",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Escort operations",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 6
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Applications received",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 38
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Radiation bills issued",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Radiation licences issued",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 10
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Facilities inventoried",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Waste applications responded to",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 15
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Waste certificates issued",
+   "points": [
+    {
+     "period": "Q3 2026",
+     "value": 4
+    }
+   ]
+  }
+ ],
+ "breakdowns": [
+  {
+   "unit": "CMU",
+   "title": "Regulatory instruments issued, Q3 2026",
+   "type": "parts",
+   "items": [
+    {
+     "label": "Release / clearances",
+     "value": 19
+    },
+    {
+     "label": "Importation licences",
+     "value": 5
+    },
+    {
+     "label": "Effluent discharge",
+     "value": 5
+    },
+    {
+     "label": "Registration licences",
+     "value": 3
+    },
+    {
+     "label": "Transport licences",
+     "value": 2
+    },
+    {
+     "label": "Fumigation licences",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "title": "Trucks escorted by consignment, September 2026",
+   "type": "bars",
+   "items": [
+    {
+     "label": "Ammonium nitrate (3 escorts)",
+     "value": 55
+    },
+    {
+     "label": "Explosives (2 escorts)",
+     "value": 30
+    },
+    {
+     "label": "Ferric chloride (1 escort)",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "title": "Sachet water certification pipeline, Q3 2026",
+   "type": "pipeline",
+   "items": [
+    {
+     "label": "Applications received",
+     "value": 35
+    },
+    {
+     "label": "Response letters picked up",
+     "value": 26
+    },
+    {
+     "label": "Lab results received",
+     "value": 19
+    },
+    {
+     "label": "Applicants paid",
+     "value": 14
+    },
+    {
+     "label": "Certificates printed",
+     "value": 11
+    },
+    {
+     "label": "Certificates issued",
+     "value": 11
+    }
+   ]
+  },
+  {
+   "unit": "EMRU",
+   "title": "Complaints received by nature, Q3 2026",
+   "type": "parts",
+   "items": [
+    {
+     "label": "Noise pollution",
+     "value": 3
+    },
+    {
+     "label": "Water pollution",
+     "value": 1
+    },
+    {
+     "label": "Wastewater",
+     "value": 1
+    },
+    {
+     "label": "Salt and particulate contamination",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "title": "Radiation licences by holder, Q3 2026",
+   "type": "bars",
+   "items": [
+    {
+     "label": "Bea Mountain Mining (importation)",
+     "value": 7
+    },
+    {
+     "label": "ArcelorMittal (possess and use)",
+     "value": 2
+    },
+    {
+     "label": "AMI Expeditionary Health Care (possess and use)",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "title": "Waste application pipeline, Q3 2026",
+   "type": "pipeline",
+   "items": [
+    {
+     "label": "Applications received",
+     "value": 17
+    },
+    {
+     "label": "Responded to",
+     "value": 15
+    },
+    {
+     "label": "Certificates issued",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "title": "Waste applications by month, Q3 2026",
+   "type": "bars",
+   "items": [
+    {
+     "label": "July",
+     "value": 3
+    },
+    {
+     "label": "August",
+     "value": 7
+    },
+    {
+     "label": "September",
+     "value": 7
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "title": "Undertakings applied for, Q3 2026",
+   "type": "parts",
+   "items": [
+    {
+     "label": "Non-hazardous municipal",
+     "value": 11
+    },
+    {
+     "label": "Hazardous (scrap, tyres, batteries, plastics, medical, sewage)",
+     "value": 5
+    },
+    {
+     "label": "Other request",
+     "value": 1
+    }
+   ]
+  }
+ ],
+ "studies": [
+  {
+   "title": "Proponent self-monitoring results, July 2026",
+   "place": "9 reporting facilities",
+   "date": "2026-07-31",
+   "matrix": "water and air",
+   "standard": "EPA Liberia permissible limits",
+   "note": "Values reported by proponents to EPA",
+   "kind": "compliance",
+   "params": [
+    {
+     "name": "Water pH",
+     "unit": "",
+     "min": 6.5,
+     "max": 8.0
+    },
+    {
+     "name": "Suspended solids",
+     "unit": "mg/L",
+     "min": null,
+     "max": 10
+    },
+    {
+     "name": "Ammonia (NH4)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Nitrate (NO3)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 40
+    },
+    {
+     "name": "CO",
+     "unit": "ppm",
+     "min": null,
+     "max": 50
+    },
+    {
+     "name": "CO2",
+     "unit": "ppm",
+     "min": null,
+     "max": 1000
+    },
+    {
+     "name": "NO2",
+     "unit": "ppm",
+     "min": null,
+     "max": 5
+    },
+    {
+     "name": "PM2.5",
+     "unit": "µg/m³",
+     "min": null,
+     "max": 10
+    }
+   ],
+   "rows": [
+    {
+     "code": "Sethi Ferro Fabrik",
+     "label": "Sethi Ferro Fabrik",
+     "control": false,
+     "values": [
+      7.07,
+      8.57,
+      null,
+      0.48,
+      165,
+      421,
+      1.65,
+      12.1
+     ]
+    },
+    {
+     "code": "Cavalla Resources, Geo Fantro",
+     "label": "Cavalla Resources, Geo Fantro",
+     "control": false,
+     "values": [
+      6.5,
+      null,
+      0.01,
+      0.735,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    {
+     "code": "Cavalla Resources, Kitoma",
+     "label": "Cavalla Resources, Kitoma",
+     "control": false,
+     "values": [
+      null,
+      null,
+      0.15,
+      0.543,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    {
+     "code": "Rainbow Paint Factory",
+     "label": "Rainbow Paint Factory",
+     "control": false,
+     "values": [
+      7.18,
+      0.43,
+      null,
+      0.003,
+      16,
+      178.5,
+      1.7,
+      5.25
+     ]
+    },
+    {
+     "code": "BUMU International Liberia",
+     "label": "BUMU International Liberia",
+     "control": false,
+     "values": [
+      7.3,
+      null,
+      null,
+      2.6,
+      null,
+      46.2,
+      0.35,
+      17
+     ]
+    },
+    {
+     "code": "Atlantic Shipping Liberia",
+     "label": "Atlantic Shipping Liberia",
+     "control": false,
+     "values": [
+      7.35,
+      9.27,
+      null,
+      0.5,
+      5,
+      5.25,
+      0.03,
+      4.67
+     ]
+    },
+    {
+     "code": "International Aluminium Factory (1)",
+     "label": "International Aluminium Factory (1)",
+     "control": false,
+     "values": [
+      7.25,
+      null,
+      null,
+      0.4,
+      482.25,
+      5.15,
+      null,
+      6.55
+     ]
+    },
+    {
+     "code": "International Aluminium Factory (2)",
+     "label": "International Aluminium Factory (2)",
+     "control": false,
+     "values": [
+      7.25,
+      null,
+      null,
+      0.4,
+      11,
+      540.4,
+      0.006,
+      5.29
+     ]
+    },
+    {
+     "code": "Golden SIFCA",
+     "label": "Golden SIFCA",
+     "control": false,
+     "values": [
+      6.84,
+      9.21,
+      null,
+      0.45,
+      20.3,
+      430,
+      0.68,
+      6.65
+     ]
+    }
+   ]
+  }
+ ],
+ "readings": [
+  {
+   "title": "Night-time noise, Peuto Dela Torres Compound",
+   "place": "Oldest Congo Town, Montserrado",
+   "date": "2026-09-14",
+   "unitLabel": "dBA",
+   "limit": 55,
+   "limitLabel": "Night-time limit 55 dBA",
+   "points": [
+    {
+     "label": "Rear of Cllr. F. Korkpor fence",
+     "value": 62.5,
+     "lat": 6.270661,
+     "lon": -10.7400045
+    },
+    {
+     "label": "Front gate, Korkpor residence",
+     "value": 62.7,
+     "lat": 6.2707293,
+     "lon": -10.7399801
+    },
+    {
+     "label": "General Merchandise Store (3 entertainment centres)",
+     "value": 79.8,
+     "lat": 6.27035797,
+     "lon": -10.74017802
+    },
+    {
+     "label": "Entertainment centre (D. Zagbar)",
+     "value": 94.8,
+     "lat": 6.26995953,
+     "lon": -10.74042023
+    },
+    {
+     "label": "A. Domah business centre, main road",
+     "value": 94.8,
+     "lat": 6.2699881,
+     "lon": -10.7404402
+    },
+    {
+     "label": "Millter business centre, One Step Corner",
+     "value": 86.8,
+     "lat": 6.2695226,
+     "lon": -10.7406856
+    },
+    {
+     "label": "D. G. Teah entertainment centre",
+     "value": 87.1,
+     "lat": 6.26914987,
+     "lon": -10.74090233
+    },
+    {
+     "label": "Main road toward A. Kamara residence",
+     "value": 77.1,
+     "lat": 6.2688929,
+     "lon": -10.7410699
+    },
+    {
+     "label": "A. Kamara residence",
+     "value": 62.8,
+     "lat": 6.2688815,
+     "lon": -10.7411116
+    },
+    {
+     "label": "F. France gate",
+     "value": 64.2,
+     "lat": 6.2688752,
+     "lon": -10.74112235
+    },
+    {
+     "label": "Along fence, Cllr. P. Banks residence",
+     "value": 62.9,
+     "lat": 6.2699058,
+     "lon": -10.7404459
+    }
+   ]
+  }
+ ],
+ "activities": [
+  {
+   "date": "2026-07-14",
+   "unit": "EMRU",
+   "title": "Joint anti-mineral smuggling awareness (GIZ)",
+   "place": "Tienii",
+   "county": "Grand Cape Mount",
+   "type": "outreach"
+  },
+  {
+   "date": "2026-07-15",
+   "unit": "EMRU",
+   "title": "Anti-smuggling awareness in an illicit gold mining area using mercury",
+   "place": "Mano Kojuah Town",
+   "county": "Grand Cape Mount",
+   "type": "outreach"
+  },
+  {
+   "date": "2026-07-16",
+   "unit": "EMRU",
+   "title": "Anti-smuggling awareness team",
+   "place": "Gogoima Town",
+   "county": "Grand Cape Mount",
+   "type": "outreach"
+  },
+  {
+   "date": "2026-07-07",
+   "unit": "EMRU",
+   "title": "Joint assessments of 74 mineral and sachet water factories, June–July (EPA, NWASH, FDA, MOH)",
+   "place": "Greater Monrovia",
+   "county": "Montserrado",
+   "type": "assessment"
+  },
+  {
+   "date": "2026-07-10",
+   "unit": "EMRU",
+   "title": "Surface water samples from a mine site",
+   "place": "Bensonville",
+   "county": "Montserrado",
+   "type": "sampling"
+  },
+  {
+   "date": "2026-07-14",
+   "unit": "EMRU",
+   "title": "Restoration of a chemical spillage site",
+   "place": "Bomi Highway",
+   "county": "Bomi",
+   "type": "remediation"
+  },
+  {
+   "date": "2026-07-27",
+   "unit": "EMRU",
+   "title": "Lab analysis: 2 surface water samples (pH to copper)",
+   "place": "Kinjor",
+   "county": "Grand Cape Mount",
+   "type": "lab"
+  },
+  {
+   "date": "2026-08-04",
+   "unit": "EMRU",
+   "title": "Remediation of a gold mine site",
+   "place": "Upper Montserrado / Lower Margibi",
+   "county": "Margibi",
+   "type": "remediation"
+  },
+  {
+   "date": "2026-08-10",
+   "unit": "EMRU",
+   "title": "Contamination investigation: salt spillage and particulates (NP Liberia, Fouani Brothers)",
+   "place": "Monrovia Industrial Park",
+   "county": "Montserrado",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-08-11",
+   "unit": "EMRU",
+   "title": "Lab analysis: 2 surface + 1 groundwater samples",
+   "place": "Monrovia Industrial Park, LPRC community",
+   "county": "Montserrado",
+   "type": "lab"
+  },
+  {
+   "date": "2026-08-12",
+   "unit": "EMRU",
+   "title": "Inspection and monitoring at ArcelorMittal",
+   "place": "Buchanan",
+   "county": "Grand Bassa",
+   "type": "inspection"
+  },
+  {
+   "date": "2026-08-13",
+   "unit": "EMRU",
+   "title": "Pollution investigation after a complaint against ArcelorMittal",
+   "place": "Bolo Town, Yekepa",
+   "county": "Nimba",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-08-17",
+   "unit": "EMRU",
+   "title": "Lab analysis: 8 surface + 1 groundwater samples",
+   "place": "Bolo Town",
+   "county": "Nimba",
+   "type": "lab"
+  },
+  {
+   "date": "2026-08-20",
+   "unit": "EMRU",
+   "title": "Wastewater pollution verification",
+   "place": "White House community, Congo Town",
+   "county": "Montserrado",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-08-25",
+   "unit": "EMRU",
+   "title": "Lab analysis: 2 surface + 7 groundwater samples",
+   "place": "Bea Mountain, Kinjor",
+   "county": "Grand Cape Mount",
+   "type": "lab"
+  },
+  {
+   "date": "2026-08-28",
+   "unit": "EMRU",
+   "title": "Site verification and lab analysis of 2 groundwater samples",
+   "place": "Golden Loaf Bakery, Airfield",
+   "county": "Montserrado",
+   "type": "lab"
+  },
+  {
+   "date": "2026-08-28",
+   "unit": "EMRU",
+   "title": "Noise pollution investigation",
+   "place": "Gbangay Town",
+   "county": "Montserrado",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-09-02",
+   "unit": "EMRU",
+   "title": "Site verifications: Pan Oxygen, Monrovia Club Breweries, MDMC",
+   "place": "Freeport / Bushrod Island / Mount Barclay",
+   "county": "Montserrado",
+   "type": "inspection"
+  },
+  {
+   "date": "2026-09-02",
+   "unit": "EMRU",
+   "title": "Lab analysis: sludge pit sample",
+   "place": "Monrovia Club Breweries",
+   "county": "Montserrado",
+   "type": "lab"
+  },
+  {
+   "date": "2026-09-07",
+   "unit": "EMRU",
+   "title": "Laboratory accreditation issued to MNG Gold Liberia",
+   "place": "MNG Gold",
+   "county": "Bong",
+   "type": "licence"
+  },
+  {
+   "date": "2026-09-05",
+   "unit": "CMU",
+   "title": "Escort: explosives, 6 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-09-09",
+   "unit": "CMU",
+   "title": "Escort: ferric chloride, 3 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-09-14",
+   "unit": "EMRU",
+   "title": "Night-time noise investigation, 11 readings",
+   "place": "Peuto Dela Torres Compound, Congo Town",
+   "county": "Montserrado",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-09-18",
+   "unit": "CMU",
+   "title": "Escort: explosives, 24 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-09-20",
+   "unit": "EMRU",
+   "title": "Noise pollution investigation",
+   "place": "3rd Street, Sinkor",
+   "county": "Montserrado",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-09-22",
+   "unit": "CMU",
+   "title": "Escort: ammonium nitrate, 16 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-09-23",
+   "unit": "CMU",
+   "title": "Escort: ammonium nitrate, 16 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-09-24",
+   "unit": "CMU",
+   "title": "Escort: ammonium nitrate, 23 trucks",
+   "place": "Freeport to mine sites",
+   "county": "Montserrado",
+   "type": "escort"
+  },
+  {
+   "date": "2026-07-20",
+   "unit": "RSU",
+   "title": "Regional training on non-medical human imaging (IAEA)",
+   "place": "Dar es Salaam",
+   "county": "",
+   "type": "training"
+  },
+  {
+   "date": "2026-07-31",
+   "unit": "RSU",
+   "title": "IAEA fellowship: notification and authorization",
+   "place": "Ethiopia",
+   "county": "",
+   "type": "training"
+  },
+  {
+   "date": "2026-08-31",
+   "unit": "RSU",
+   "title": "IAEA fellowship: inspection and enforcement",
+   "place": "Tanzania",
+   "county": "",
+   "type": "training"
+  },
+  {
+   "date": "2026-09-15",
+   "unit": "RSU",
+   "title": "Validation programme for the draft Radiation Safety Law",
+   "place": "Monrovia",
+   "county": "Montserrado",
+   "type": "regulation"
+  },
+  {
+   "date": "2026-09-10",
+   "unit": "WRU",
+   "title": "Seventh meeting, Expert Working Group on Annex II review",
+   "place": "Geneva",
+   "county": "",
+   "type": "meeting"
+  },
+  {
+   "date": "2026-09-16",
+   "unit": "WRU",
+   "title": "International World Ozone Day",
+   "place": "Buchanan",
+   "county": "Grand Bassa",
+   "type": "outreach"
+  }
+ ],
+ "places": [
+  {
+   "name": "MNG Gold Liberia (laboratory accredited)",
+   "county": "Bong",
+   "lat": null,
+   "lon": null,
+   "kind": "licence"
+  }
+ ],
+ "highlights": [
+  "CMU answered 38 of 38 applications in Q3 and issued 35 regulatory instruments",
+  "EMRU recorded its busiest field quarter of 2026: 91 environmental investigations",
+  "88 trucks of explosives, ferric chloride and ammonium nitrate escorted in September",
+  "Validation programme held for the draft Radiation Safety Law",
+  "MNG Gold Liberia laboratory accredited, the 7th lab accredited in 2026",
+  "Chemical registration and import licences: 69 issued against a target of 60",
+  "Night-time noise of up to 94.8 dBA recorded in Congo Town, against a 55 dBA limit"
+ ],
+ "challenges": [
+  {
+   "unit": "CMU",
+   "text": "No personal protective equipment for chemical handlers"
+  },
+  {
+   "unit": "CMU",
+   "text": "Freeport duties held back until the National Port Authority training takes place"
+  },
+  {
+   "unit": "EMRU",
+   "text": "Poor roads and a personal low-clearance vehicle slow field monitoring"
+  },
+  {
+   "unit": "EMRU",
+   "text": "Late and incomplete proponent reports; NO₃, CO, NH₄, PM2.5 and pH often missing"
+  },
+  {
+   "unit": "RSU",
+   "text": "Too few vehicles to inventory and inspect radiation facilities in the counties"
+  },
+  {
+   "unit": "RSU",
+   "text": "Draft radiation regulation not yet published; dosimetry and RASIMS training needed"
+  },
+  {
+   "unit": "WRU",
+   "text": "No computers, vehicles, fuel or working printer; slow processing from receipt to certificate"
+  }
+ ],
+ "actions": [
+  {
+   "unit": "CMU",
+   "text": "Start the school laboratory chemical inventory",
+   "due": "Q4 2026",
+   "priority": null
+  },
+  {
+   "unit": "RSU",
+   "text": "Publish the radiation regulation and sign the Schedule 5 fee schedule",
+   "due": "Q4 2026",
+   "priority": null
+  },
+  {
+   "unit": "EMRU",
+   "text": "Enforce reporting deadlines and require complete parameter reporting",
+   "due": "Q4 2026",
+   "priority": null
+  }
+ ],
+ "about": null,
+ "id": "q3-2026-consolidated"
+}

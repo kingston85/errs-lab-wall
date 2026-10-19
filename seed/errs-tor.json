@@ -1,0 +1,64 @@
+{
+ "title": "ERRS Department Terms of Reference",
+ "kind": "other",
+ "unit": "ERRS",
+ "period": {
+  "label": "2025",
+  "year": 2025,
+  "quarter": null,
+  "start": "2025-08-07",
+  "end": null
+ },
+ "fileName": "ERRS_Updated_ToR.pdf",
+ "summary": "Mandate, structure and staff terms of reference for the four units of the ERRS Department.",
+ "headline": [],
+ "kpis": [],
+ "series": [],
+ "breakdowns": [],
+ "studies": [],
+ "readings": [],
+ "activities": [],
+ "places": [],
+ "highlights": [],
+ "challenges": [],
+ "actions": [],
+ "about": {
+  "vision": "To be a leading force in environmental protection and radiation safety, fostering a healthy and sustainable Liberia through scientific excellence, regulatory compliance and community engagement.",
+  "mission": "To safeguard public health and the environment by conducting rigorous research, monitoring environmental parameters, ensuring safe chemical and radiation management, and promoting sustainable waste and remediation practices.",
+  "values": [
+   "Integrity",
+   "Excellence",
+   "Collaboration",
+   "Accountability",
+   "Innovation"
+  ],
+  "units": [
+   {
+    "code": "CMU",
+    "name": "Chemical Management Unit",
+    "head": "Emmanuel Suah",
+    "remit": "Chemical registration, importation, effluent, fumigation, disposal and transport licences; escorts; pollutant registry"
+   },
+   {
+    "code": "EMRU",
+    "name": "Environmental Monitoring and Research Unit",
+    "head": "Joseph F. Charles",
+    "remit": "Water, soil, air and noise monitoring; laboratory analysis; lab accreditation; sachet water certification"
+   },
+   {
+    "code": "RSU",
+    "name": "Radiation Safety Unit",
+    "head": "Varney E. Armah",
+    "remit": "Radiation law, licences, inspections, source inventory, RAIS/RASIMS reporting to the IAEA"
+   },
+   {
+    "code": "WRU",
+    "name": "Waste and Remediation Unit",
+    "head": "Margaret M. Beyslow",
+    "remit": "Waste management licensing, facility monitoring, remediation and awareness"
+   }
+  ],
+  "director": "Rafael S. Ngumbu"
+ },
+ "id": "errs-tor"
+}

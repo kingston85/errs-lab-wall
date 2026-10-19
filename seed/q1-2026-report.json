@@ -1,0 +1,204 @@
+{
+ "title": "ERRS First Quarter Report 2026",
+ "kind": "quarterly",
+ "unit": "ERRS",
+ "period": {
+  "label": "Q1 2026",
+  "year": 2026,
+  "quarter": 1,
+  "start": "2026-01-05",
+  "end": "2026-03-31"
+ },
+ "fileName": "ERRS_First_Quarter_Report_2026.pdf",
+ "summary": "A strong licensing start to the year: CMU issued 41 chemical registration licences and 24 clearances with 10 escort operations; EMRU processed 84 sachet water applications, ran 44 site verifications and analysed 53 lab results; RSU answered IAEA comments on the zero-draft Nuclear Act.",
+ "headline": [
+  {
+   "label": "Chemical registration licences",
+   "value": 41,
+   "note": "CMU",
+   "unit": "CMU"
+  },
+  {
+   "label": "Sachet water applications",
+   "value": 84,
+   "note": "EMRU · 75 certificates printed",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Laboratory results analysed",
+   "value": 53,
+   "note": "EMRU",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Site verifications",
+   "value": 44,
+   "note": "EMRU",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Chemical escort operations",
+   "value": 10,
+   "note": "CMU",
+   "unit": "CMU"
+  }
+ ],
+ "kpis": [],
+ "series": [
+  {
+   "unit": "CMU",
+   "label": "Chemical registration licences",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 41
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical importation licences",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 6
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Effluent discharge licences",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical release / clearances",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 24
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Fumigation licences",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Transport licences",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Escort operations",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 10
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Waste certificates issued",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Facilities inventoried",
+   "points": [
+    {
+     "period": "Q1 2026",
+     "value": 0
+    }
+   ]
+  }
+ ],
+ "breakdowns": [
+  {
+   "unit": "CMU",
+   "title": "Licences and clearances by month, Q1 2026",
+   "type": "bars",
+   "items": [
+    {
+     "label": "January",
+     "value": 31
+    },
+    {
+     "label": "February",
+     "value": 66
+    },
+    {
+     "label": "March",
+     "value": 25
+    }
+   ]
+  }
+ ],
+ "studies": [],
+ "readings": [],
+ "activities": [
+  {
+   "date": "2026-02-20",
+   "unit": "CMU",
+   "title": "Notice to ArcelorMittal on the sediment spill at the Yuelliton mine",
+   "place": "Yuelliton mine",
+   "county": "Nimba",
+   "type": "regulation"
+  },
+  {
+   "date": "2026-03-20",
+   "unit": "CMU",
+   "title": "Chemical inventory at MOPP, CRC, Golden SIFCA and Golden Veroleum",
+   "place": "Maryland and Grand Kru",
+   "county": "Maryland",
+   "type": "inspection"
+  },
+  {
+   "date": "2026-03-15",
+   "unit": "RSU",
+   "title": "Water pollution investigation and compliance audit at BMMC",
+   "place": "Bea Mountain",
+   "county": "Grand Cape Mount",
+   "type": "investigation"
+  },
+  {
+   "date": "2026-03-25",
+   "unit": "RSU",
+   "title": "Stakeholder consultation at China Union, Bong Mines",
+   "place": "Bong Mines",
+   "county": "Bong",
+   "type": "meeting"
+  }
+ ],
+ "places": [],
+ "highlights": [
+  "Q1: 41 chemical registration licences issued in three months"
+ ],
+ "challenges": [],
+ "actions": [],
+ "about": null,
+ "id": "q1-2026-report"
+}

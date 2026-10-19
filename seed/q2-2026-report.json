@@ -1,0 +1,291 @@
+{
+ "title": "ERRS Second Quarter Report 2026",
+ "kind": "quarterly",
+ "unit": "ERRS",
+ "period": {
+  "label": "Q2 2026",
+  "year": 2026,
+  "quarter": 2,
+  "start": "2026-04-01",
+  "end": "2026-06-30"
+ },
+ "fileName": "ERRS_Quarter_2_Report_2026.pdf",
+ "summary": "CMU issued 56 instruments with a full response rate and supervised the 14-day Sethi Ferro Fabrik clean-up; EMRU ran 66 investigations and accredited six laboratories; RSU inventoried seven medical facilities and hosted an IAEA expert mission.",
+ "headline": [
+  {
+   "label": "Regulatory instruments issued",
+   "value": 56,
+   "note": "CMU · 48 of 48 applications answered",
+   "unit": "CMU"
+  },
+  {
+   "label": "Chemical escort operations",
+   "value": 26,
+   "note": "CMU",
+   "unit": "CMU"
+  },
+  {
+   "label": "Environmental investigations",
+   "value": 66,
+   "note": "EMRU",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Laboratories accredited",
+   "value": 6,
+   "note": "BMMC ×4, GLM, ArcelorMittal",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Medical facilities inventoried",
+   "value": 7,
+   "note": "plus 4 mining radiation surveys",
+   "unit": "RSU"
+  },
+  {
+   "label": "Waste certificates issued",
+   "value": 11,
+   "note": "26 providers assessed",
+   "unit": "WRU"
+  }
+ ],
+ "kpis": [],
+ "series": [
+  {
+   "unit": "CMU",
+   "label": "Chemical registration licences",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 10
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical importation licences",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Effluent discharge licences",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Chemical release / clearances",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 34
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Fumigation licences",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Transport licences",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Escort operations",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 26
+    }
+   ]
+  },
+  {
+   "unit": "CMU",
+   "label": "Applications received",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 48
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Radiation bills issued",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "unit": "RSU",
+   "label": "Facilities inventoried",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 11
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Waste applications responded to",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 15
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Waste certificates issued",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 11
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "label": "Providers assessed",
+   "points": [
+    {
+     "period": "Q2 2026",
+     "value": 26
+    }
+   ]
+  }
+ ],
+ "breakdowns": [
+  {
+   "unit": "CMU",
+   "title": "Regulatory instruments issued, Q2 2026",
+   "type": "parts",
+   "items": [
+    {
+     "label": "Release / clearances",
+     "value": 34
+    },
+    {
+     "label": "Registration licences",
+     "value": 10
+    },
+    {
+     "label": "Importation licences",
+     "value": 4
+    },
+    {
+     "label": "Effluent discharge",
+     "value": 4
+    },
+    {
+     "label": "Fumigation licences",
+     "value": 3
+    },
+    {
+     "label": "Transport licences",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "unit": "WRU",
+   "title": "Waste service providers assessed, Q2 2026",
+   "type": "bars",
+   "items": [
+    {
+     "label": "April",
+     "value": 10
+    },
+    {
+     "label": "May",
+     "value": 10
+    },
+    {
+     "label": "June",
+     "value": 6
+    }
+   ]
+  }
+ ],
+ "studies": [],
+ "readings": [],
+ "activities": [
+  {
+   "date": "2026-04-15",
+   "unit": "CMU",
+   "title": "14-day supervised removal of chemical waste after the Sethi Ferro Fabrik fire",
+   "place": "Iron Factory",
+   "county": "Montserrado",
+   "type": "remediation"
+  },
+  {
+   "date": "2026-04-20",
+   "unit": "CMU",
+   "title": "BCRP training for fumigation applicators",
+   "place": "Bong County",
+   "county": "Bong",
+   "type": "training"
+  },
+  {
+   "date": "2026-05-16",
+   "unit": "RSU",
+   "title": "Nationwide compliance monitoring exercise (to 27 May)",
+   "place": "Nationwide",
+   "county": "",
+   "type": "inspection"
+  },
+  {
+   "date": "2026-05-25",
+   "unit": "RSU",
+   "title": "IAEA Technical Cooperation expert mission (to 29 May)",
+   "place": "Monrovia",
+   "county": "Montserrado",
+   "type": "meeting"
+  },
+  {
+   "date": "2026-06-10",
+   "unit": "CMU",
+   "title": "Nationwide chemical inventory at LIDA, Freeport",
+   "place": "Freeport",
+   "county": "Montserrado",
+   "type": "inspection"
+  }
+ ],
+ "places": [],
+ "highlights": [
+  "Q2: six laboratories accredited (BMMC ×4, GLM, ArcelorMittal)",
+  "Q2: 14-day clean-up of chemical waste after the Sethi Ferro Fabrik fire",
+  "Q2: IAEA Technical Cooperation expert mission hosted, 25–29 May"
+ ],
+ "challenges": [],
+ "actions": [],
+ "about": null,
+ "id": "q2-2026-report"
+}

@@ -1,0 +1,415 @@
+{
+ "title": "Bolo Town Water Pollution Investigation",
+ "kind": "investigation",
+ "unit": "EMRU",
+ "period": {
+  "label": "Aug 2026",
+  "year": 2026,
+  "quarter": 3,
+  "start": "2026-08-13",
+  "end": "2026-08-17"
+ },
+ "fileName": "Bolo_Town_Investigation_Drafted_report_V2.pdf",
+ "summary": "Eight surface water samples and one hand pump around Bolo Town, Nimba, after a community complaint against ArcelorMittal. Iron exceeded the 2 mg/L standard at every point except the upstream control.",
+ "headline": [
+  {
+   "label": "Samples analysed",
+   "value": 9,
+   "note": "8 surface water · 1 groundwater",
+   "unit": "EMRU"
+  },
+  {
+   "label": "Iron at the worst point",
+   "value": 2.77,
+   "note": "mg/L · limit 2.0 · control 0.08",
+   "unit": "EMRU"
+  }
+ ],
+ "kpis": [],
+ "series": [],
+ "breakdowns": [],
+ "studies": [
+  {
+   "title": "Bolo Town streams, acid mine leachate",
+   "place": "Bolo Town, Yekepa, Nimba County",
+   "date": "2026-08-13",
+   "matrix": "surface water and groundwater",
+   "standard": "Liberian water quality standards (Class I)",
+   "note": "Means of triplicate readings",
+   "kind": "lab",
+   "params": [
+    {
+     "name": "pH",
+     "unit": "",
+     "min": 6.5,
+     "max": 8.5
+    },
+    {
+     "name": "Electrical conductivity",
+     "unit": "µS/cm",
+     "min": null,
+     "max": 150
+    },
+    {
+     "name": "Turbidity",
+     "unit": "NTU",
+     "min": null,
+     "max": 50
+    },
+    {
+     "name": "Total dissolved solids",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1000
+    },
+    {
+     "name": "Nitrate (NO3)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 50
+    },
+    {
+     "name": "Nitrite (NO2)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 3
+    },
+    {
+     "name": "Ammonia",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Iron (Fe)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 2
+    },
+    {
+     "name": "Chromium (Cr)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 2
+    },
+    {
+     "name": "Copper (Cu)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Aluminium (Al)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.75
+    },
+    {
+     "name": "Bismuth (Bi)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.7
+    },
+    {
+     "name": "Boron (B)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Cadmium (Cd)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.01
+    },
+    {
+     "name": "Lead (Pb)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 0.01
+    },
+    {
+     "name": "Manganese (Mn)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Zinc (Zn)",
+     "unit": "mg/L",
+     "min": null,
+     "max": 1
+    },
+    {
+     "name": "Sulfate",
+     "unit": "mg/L",
+     "min": null,
+     "max": 250
+    }
+   ],
+   "rows": [
+    {
+     "code": "KR-SW-001",
+     "label": "Karn River below mining discharge routes",
+     "lat": 7.543189,
+     "lon": -8.608411,
+     "control": false,
+     "values": [
+      6.47,
+      156.0,
+      20.7,
+      23.0,
+      14.0,
+      0.02,
+      0.1,
+      2.77,
+      0.28,
+      0.49,
+      0.81,
+      0.84,
+      1.08,
+      0.005,
+      0.005,
+      1.02,
+      1.08,
+      26.77
+     ]
+    },
+    {
+     "code": "KR-SW-002",
+     "label": "Karn River, secondary downstream point",
+     "lat": 7.547365,
+     "lon": -8.607679,
+     "control": false,
+     "values": [
+      8.13,
+      194.0,
+      26.1,
+      47.0,
+      37.0,
+      0.004,
+      0.25,
+      2.2,
+      0.16,
+      0.4,
+      0.71,
+      0.71,
+      0.99,
+      0.002,
+      0.013,
+      0.97,
+      0.77,
+      24.33
+     ]
+    },
+    {
+     "code": "YC-SW-003",
+     "label": "Yeewah Creek above the confluence",
+     "lat": 7.547428,
+     "lon": -8.60864,
+     "control": false,
+     "values": [
+      7.17,
+      184.0,
+      109.0,
+      42.0,
+      34.0,
+      0.007,
+      0.1,
+      2.1,
+      0.21,
+      0.72,
+      0.83,
+      0.74,
+      1.07,
+      0.001,
+      0.009,
+      1.07,
+      0.97,
+      26.83
+     ]
+    },
+    {
+     "code": "KR-C-SW-004",
+     "label": "Karn River upstream control",
+     "lat": 7.547436,
+     "lon": -8.608511,
+     "control": true,
+     "values": [
+      7.19,
+      92.0,
+      9.89,
+      46.0,
+      25.0,
+      0.022,
+      0.15,
+      0.08,
+      0.48,
+      0.38,
+      0.071,
+      "<0.01",
+      0.077,
+      "<0.001",
+      "<0.001",
+      0.003,
+      0.38,
+      15.83
+     ]
+    },
+    {
+     "code": "YC-SW-005",
+     "label": "Yeewah Creek below the Yuelliton/Gangra confluence",
+     "lat": 7.55241,
+     "lon": -8.611755,
+     "control": false,
+     "values": [
+      6.97,
+      169.0,
+      141.0,
+      35.0,
+      24.0,
+      0.009,
+      0.0,
+      2.1,
+      0.04,
+      0.55,
+      0.71,
+      0.73,
+      1.28,
+      0.002,
+      0.005,
+      1.17,
+      1.08,
+      25.73
+     ]
+    },
+    {
+     "code": "YC-SW-006",
+     "label": "Yeewah Creek downstream, combined load",
+     "lat": 7.553984,
+     "lon": -8.614395,
+     "control": false,
+     "values": [
+      6.42,
+      36.0,
+      163.0,
+      18.0,
+      42.0,
+      0.013,
+      0.0,
+      2.06,
+      0.03,
+      0.47,
+      0.82,
+      0.61,
+      1.19,
+      0.002,
+      0.005,
+      1.09,
+      1.07,
+      24.38
+     ]
+    },
+    {
+     "code": "YLC-SW-007",
+     "label": "Yuelliton Creek, direct mine drainage",
+     "lat": 7.553172,
+     "lon": -8.614763,
+     "control": false,
+     "values": [
+      6.41,
+      64.0,
+      129.0,
+      32.0,
+      27.0,
+      0.0,
+      0.05,
+      2.16,
+      0.13,
+      0.09,
+      0.76,
+      0.73,
+      1.05,
+      0.003,
+      0.016,
+      1.07,
+      1.12,
+      25.97
+     ]
+    },
+    {
+     "code": "YC-G-SW-008",
+     "label": "Gangra Wenneh Creek into the Yeewah confluence",
+     "lat": 7.553141,
+     "lon": -8.61476,
+     "control": false,
+     "values": [
+      6.64,
+      169.0,
+      36.7,
+      35.0,
+      24.0,
+      0.009,
+      0.05,
+      2.03,
+      0.28,
+      0.48,
+      0.61,
+      0.63,
+      0.88,
+      0.001,
+      0.011,
+      1.28,
+      0.99,
+      26.63
+     ]
+    },
+    {
+     "code": "BT-GW-009",
+     "label": "Bolo Town community hand pump (groundwater)",
+     "lat": 7.5427192,
+     "lon": -8.6069047,
+     "control": false,
+     "values": [
+      5.79,
+      207.0,
+      2.57,
+      104.0,
+      44.0,
+      0.016,
+      0.5,
+      2.07,
+      0.42,
+      0.03,
+      0.73,
+      0.83,
+      0.91,
+      0.003,
+      0.005,
+      1.19,
+      0.87,
+      25.59
+     ]
+    }
+   ]
+  }
+ ],
+ "readings": [],
+ "activities": [],
+ "places": [
+  {
+   "name": "Bolo Town",
+   "county": "Nimba",
+   "lat": 7.5427,
+   "lon": -8.6069,
+   "kind": "investigation"
+  }
+ ],
+ "highlights": [
+  "Bolo Town: iron above 2 mg/L at all 8 impacted points; upstream control 0.08 mg/L"
+ ],
+ "challenges": [],
+ "actions": [],
+ "about": null,
+ "id": "bolo-town-2026"
+}

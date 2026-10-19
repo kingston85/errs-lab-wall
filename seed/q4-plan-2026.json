@@ -1,0 +1,201 @@
+{
+ "title": "2026 Outputs: Status and Q4 Plan",
+ "kind": "plan",
+ "unit": "ERRS",
+ "period": {
+  "label": "Q4 2026",
+  "year": 2026,
+  "quarter": 4,
+  "start": "2026-10-01",
+  "end": "2026-12-31"
+ },
+ "fileName": "ERRS_2026_Outputs_Status_and_Q4_Plan.pptx",
+ "summary": "At the pace of the first nine months only 4 of 14 measurable outputs reach target by 31 December; delivering the Priority 1 and 2 aims would raise that to 8.",
+ "headline": [
+  {
+   "label": "Measurable targets met at current pace",
+   "value": 4,
+   "note": "of 14",
+   "unit": "ERRS"
+  },
+  {
+   "label": "Met if Priority 1 and 2 are delivered",
+   "value": 8,
+   "note": "of 14",
+   "unit": "ERRS"
+  }
+ ],
+ "kpis": [],
+ "series": [],
+ "breakdowns": [
+  {
+   "unit": "ERRS",
+   "title": "Status of the 25 annual outputs at 30 September",
+   "type": "parts",
+   "items": [
+    {
+     "label": "Target met",
+     "value": 2
+    },
+    {
+     "label": "Near target (≥75%)",
+     "value": 2
+    },
+    {
+     "label": "Partly achieved (40–74%)",
+     "value": 3
+    },
+    {
+     "label": "Behind (<40%)",
+     "value": 4
+    },
+    {
+     "label": "Not started",
+     "value": 3
+    },
+    {
+     "label": "Ongoing, no numeric target",
+     "value": 11
+    }
+   ]
+  }
+ ],
+ "studies": [],
+ "readings": [],
+ "activities": [],
+ "places": [],
+ "highlights": [
+  "Q4 plan: five outputs can still close by 31 December — monitoring reports, fumigation, polluted sites, lab accreditation, handler training"
+ ],
+ "challenges": [
+  {
+   "unit": "ERRS",
+   "text": "Vehicles and fuel — unlocks outputs 6, 4, 22, 17 and 8"
+  },
+  {
+   "unit": "CMU",
+   "text": "PPE for chemical handlers — needed for trainings and inventories"
+  },
+  {
+   "unit": "ERRS",
+   "text": "Computers and a printer — unlocks waste certificates and faster report reviews"
+  },
+  {
+   "unit": "RSU",
+   "text": "Regulatory sign-off — publish the radiation regulation and Schedule 5 fees"
+  },
+  {
+   "unit": "ERRS",
+   "text": "Staff — six laboratory posts (output 5) remain unfilled"
+  }
+ ],
+ "actions": [
+  {
+   "unit": "EMRU",
+   "text": "Monitoring reports: 13 more, with written deadlines for late proponents",
+   "due": "31 Dec 2026",
+   "priority": 1,
+   "output": 12
+  },
+  {
+   "unit": "CMU",
+   "text": "Fumigation licences: 2 more — call pending applicants trained in Bong County",
+   "due": "31 Dec 2026",
+   "priority": 1,
+   "output": 15
+  },
+  {
+   "unit": "CMU",
+   "text": "Polluted sites: restore 2 more, e.g. Monrovia Industrial Park",
+   "due": "31 Dec 2026",
+   "priority": 1,
+   "output": 17
+  },
+  {
+   "unit": "EMRU",
+   "text": "Lab accreditation: inspect and accredit 5 more operator laboratories",
+   "due": "30 Nov 2026",
+   "priority": 1,
+   "output": 8
+  },
+  {
+   "unit": "CMU",
+   "text": "Two handler trainings: Freeport with NPA, and mining reagent handlers",
+   "due": "30 Nov 2026",
+   "priority": 1,
+   "output": 18
+  },
+  {
+   "unit": "CMU",
+   "text": "Disposal licences: identify holders of obsolete chemicals and invite 5 to apply",
+   "due": "31 Dec 2026",
+   "priority": 2,
+   "output": 14
+  },
+  {
+   "unit": "CMU",
+   "text": "Effluent licences: 10 more from dischargers already known",
+   "due": "31 Dec 2026",
+   "priority": 2,
+   "output": 9
+  },
+  {
+   "unit": "WRU",
+   "text": "Waste licences: clear the backlog, print certificates weekly (15 more)",
+   "due": "31 Dec 2026",
+   "priority": 2,
+   "output": 25
+  },
+  {
+   "unit": "RSU",
+   "text": "National radiation safety training for 50 medical radiographers",
+   "due": "31 Dec 2026",
+   "priority": 2,
+   "output": 2
+  },
+  {
+   "unit": "WRU",
+   "text": "Waste mapping: register 30 generators met during ESIA visits",
+   "due": "31 Dec 2026",
+   "priority": 3,
+   "output": 22
+  },
+  {
+   "unit": "RSU",
+   "text": "Radiation inventory: 15 more facilities in Montserrado and Margibi",
+   "due": "31 Dec 2026",
+   "priority": 3,
+   "output": 6
+  },
+  {
+   "unit": "CMU",
+   "text": "Chemical inventory: start school laboratories, add Monrovia industrial sites",
+   "due": "31 Dec 2026",
+   "priority": 3,
+   "output": 4
+  },
+  {
+   "unit": "EMRU",
+   "text": "Draft one paper from a 2026 dataset, e.g. the noise study",
+   "due": "31 Dec 2026",
+   "priority": 3,
+   "output": 13
+  }
+ ],
+ "milestones": [
+  {
+   "date": "2026-10-31",
+   "text": "Unit heads report October results; logistics request to management"
+  },
+  {
+   "date": "2026-11-30",
+   "text": "Second check: both trainings and lab accreditations done"
+  },
+  {
+   "date": "2027-01-31",
+   "text": "Q4 and annual report; carry outputs 22, 6 and 4 into 2027"
+  }
+ ],
+ "about": null,
+ "id": "q4-plan-2026"
+}

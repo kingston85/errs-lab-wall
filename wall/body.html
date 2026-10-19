@@ -1,0 +1,44 @@
+<div id="app">
+  <div id="wrap">
+    <div id="stage" role="region" aria-label="Laboratory wall display">
+      <div class="top">
+        <div class="brand">
+          <svg width="62" height="62" viewBox="0 0 62 62" aria-hidden="true">
+            <rect x="1" y="1" width="60" height="60" rx="16" fill="#0d1d2a" stroke="#2a4a63"/>
+            <path d="M24 13h14M27 13v13L16 45a5 5 0 0 0 4.4 7.4h21.2A5 5 0 0 0 46 45L35 26V13" fill="none" stroke="#3cc6d8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20.5 40c4-3 8 3 12 0s7-2 9.5 0" fill="none" stroke="#f5b84a" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <div style="min-width:0"><b id="wallTitle">ERRS Laboratory</b><span id="wallSub">Environmental Research and Radiation Safety · EPA Liberia</span></div>
+        </div>
+        <div class="nowshow"><small id="nowKicker">Starting</small><strong id="nowTitle">Loading the department's reports</strong></div>
+        <div class="clock"><span class="live"><i></i><span id="liveTxt">LIVE</span></span><b id="clkTime">--:--</b><span id="clkDate"></span></div>
+      </div>
+      <div id="host"></div>
+      <div class="dots" id="dots"></div>
+      <div class="progress" id="prog"></div>
+      <div class="ticker"><div class="tag">LAB NEWS</div><div class="lane"><div class="ticker-run" id="tick"></div></div></div>
+    </div>
+  </div>
+
+  <div id="hud" role="toolbar" aria-label="Display controls">
+    <button id="bPrev" title="Previous slide (←)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button id="bPlay" title="Pause or play (space)"><svg viewBox="0 0 24 24" fill="currentColor"><path id="playIcon" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+    <button id="bNext" title="Next slide (→)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button id="bFull" title="Full screen (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Full screen</span></button>
+    <button id="bManage" class="pri" title="Upload reports and settings (M)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg><span>Reports</span></button>
+  </div>
+
+  <aside id="manage" hidden aria-label="Manage the wall">
+    <header><h2>Manage the wall</h2><button class="x" id="mClose" aria-label="Close">×</button></header>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="upload" aria-selected="true">Upload</button>
+      <button role="tab" data-tab="reports" aria-selected="false">Reports</button>
+      <button role="tab" data-tab="notices" aria-selected="false">Notices</button>
+      <button role="tab" data-tab="photos" aria-selected="false">Photos</button>
+      <button role="tab" data-tab="samples" aria-selected="false">Samples</button>
+      <button role="tab" data-tab="display" aria-selected="false">Display</button>
+      <button role="tab" data-tab="ask" aria-selected="false">Ask</button>
+    </div>
+    <div class="pane" id="pane"></div>
+  </aside>
+</div>
