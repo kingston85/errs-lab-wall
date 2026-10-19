@@ -7,7 +7,8 @@ const path = require('path');
 const R = (...p) => path.join(__dirname, '..', ...p);
 
 let head = fs.readFileSync(R('wall/head.html'), 'utf8');
-const body = fs.readFileSync(R('wall/body.html'), 'utf8');
+const logo = 'data:image/png;base64,' + fs.readFileSync(R('wall/epa-logo.png')).toString('base64');
+const body = fs.readFileSync(R('wall/body.html'), 'utf8').replace('__LOGO__', logo);
 const geo = fs.readFileSync(R('wall/region.json'), 'utf8').trim();
 const app = fs.readFileSync(R('wall/app.js'), 'utf8').replace('__GEO__', () => geo);
 

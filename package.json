@@ -1,7 +1,7 @@
 {
   "name": "errs-lab-wall",
   "productName": "ERRS Lab Wall",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Big-screen display of the ERRS Department's laboratory work, built from its reports",
   "author": "Sahr Emmanuel, ERRS Department, EPA Liberia",
   "license": "UNLICENSED",
