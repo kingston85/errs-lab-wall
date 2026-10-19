@@ -263,7 +263,7 @@ function buildScenes(M) {
   for (const st of M.studies) sc.push({ key: `study:${st.rid}:${st.i}`, kicker: st.kind === 'compliance' ? 'Compliance monitoring' : 'Laboratory results', title: st.title, unit: st.report?.unit || 'EMRU', dur: 1.45, html: () => sceneStudy(M, st) });
   for (const rd of M.readings) sc.push({ key: `read:${rd.rid}:${rd.i}`, kicker: 'Field measurements', title: rd.title, unit: 'EMRU', dur: 1.15, html: () => sceneReadings(M, rd) });
   if (hasSamples) sc.push({ key: 'samples', kicker: 'Laboratory', title: 'Samples in the lab', unit: 'EMRU', dur: 1.15, html: sceneSamples });
-  if (M.points.length || Object.keys(M.byCounty).length) sc.push({ key: 'map', kicker: 'Where we work', title: 'Field activity across Liberia', unit: 'ERRS', dur: 1.2, html: () => sceneMap(M) });
+  if (M.points.length || Object.keys(M.byCounty).length) sc.push({ key: 'map', kicker: 'Where we work', title: 'Field activity by county', unit: 'ERRS', dur: 1.2, html: () => sceneMap(M) });
   if (hasPhotos) { const n = photoList().length; sc.push({ key: 'photos', kicker: 'From the field', title: 'Our work in pictures', unit: 'ERRS', durMs: clamp(n * 7000, 12000, 84000), html: scenePhotos, mount: mountPhotos }); }
   if (M.activities.length) sc.push({ key: 'activity', kicker: 'Recent work', title: 'In the field and in the lab', unit: 'ERRS', dur: 1.1, html: () => sceneActivity(M) });
   if (M.challenges.length) sc.push({ key: 'challenges', kicker: 'Support needed', title: 'What is holding the work back', unit: 'ERRS', html: () => sceneChallenges(M) });
@@ -550,31 +550,46 @@ function sceneReadings(M, rd) {
 }
 
 function sceneMap(M) {
-  const L0 = -11.75, L1 = -7.15, A0 = 4.15, A1 = 8.75;
+  const L0 = -11.62, L1 = -7.3, A0 = 4.28, A1 = 8.62;
   const k = Math.cos(6.4 * Math.PI / 180);
-  const W = 780, H = 636;
+  const W = 800, H = 668;
   const s = Math.min(W / ((L1 - L0) * k), H / (A1 - A0));
   const ox = (W - (L1 - L0) * k * s) / 2, oy = (H - (A1 - A0) * s) / 2;
   const X = (lon) => ox + (lon - L0) * k * s, Y = (lat) => H - oy - (lat - A0) * s;
-  const path = (rings) => rings.map((r) => 'M' + r.map(([lo, la]) => `${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join('L') + 'Z').join('');
+  const ring = (r) => 'M' + r.map(([lo, la]) => `${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join('L') + 'Z';
+  const path = (rings) => rings.map(ring).join('');
   const neigh = ['Sierra Leone', 'Guinea', "Côte d'Ivoire"].filter((n) => GEO[n]).map((n) => `<path d="${path(GEO[n])}" fill="#0d1d2a" stroke="#1d3447" stroke-width="1.5"/>`).join('');
-  const lib = GEO.Liberia ? `<path d="${path(GEO.Liberia)}" fill="#123044" stroke="#3cc6d8" stroke-width="2.5" stroke-linejoin="round"/>` : '';
   const counts = M.byCounty;
   const mxc = Math.max(1, ...Object.values(counts));
-  const bubbles = Object.entries(counts).map(([c, n], i) => { const [la, lo] = COUNTY[c]; const r = 14 + Math.sqrt(n / mxc) * 46; return `<g class="rise" style="--d:${3 + i}"><circle cx="${X(lo)}" cy="${Y(la)}" r="${r}" fill="rgba(245,184,74,.22)" stroke="#f5b84a" stroke-width="2"/><text x="${X(lo)}" y="${Y(la) + 8}" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="${clamp(r * 0.8, 20, 40)}" fill="#fff">${n}</text></g>`; }).join('');
-  const labels = Object.keys(COUNTY).filter((c) => c !== 'River Cess').map((c) => { const [la, lo] = COUNTY[c]; return `<text x="${X(lo)}" y="${Y(la) + (counts[c] ? 14 + Math.sqrt(counts[c] / mxc) * 46 + 22 : 5)}" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="17" fill="${counts[c] ? '#e8f1f4' : '#5f7a8c'}">${esc(c)}</text>`; }).join('');
-  const marks = M.points.map((p, i) => { const x = X(p.lon), y = Y(p.lat); const col = p.kind === 'study' ? (p.exceed ? '#ff6b5e' : '#3ddc97') : p.kind === 'reading' ? '#c39bff' : '#3cc6d8'; return `<g class="rise" style="--d:${8 + i}"><path d="M${x} ${y - 16} L${x + 12} ${y + 8} L${x - 12} ${y + 8} Z" fill="${col}" stroke="#061019" stroke-width="2"/></g>`; }).join('');
-  const sea = `<text x="${X(-10.3)}" y="${Y(4.75)}" font-family="IBM Plex Mono, monospace" font-size="18" letter-spacing="6" fill="#2a4a63">ATLANTIC OCEAN</text>`
-    + `<text x="${X(-11.55)}" y="${Y(8.3)}" font-family="IBM Plex Mono, monospace" font-size="15" letter-spacing="4" fill="#2a4a63">SIERRA LEONE</text>`
-    + `<text x="${X(-9.4)}" y="${Y(8.62)}" font-family="IBM Plex Mono, monospace" font-size="15" letter-spacing="4" fill="#2a4a63">GUINEA</text>`
-    + `<text x="${X(-7.95)}" y="${Y(6.95)}" font-family="IBM Plex Mono, monospace" font-size="15" letter-spacing="4" fill="#2a4a63" transform="rotate(-70 ${X(-7.95)} ${Y(6.95)})">CÔTE D'IVOIRE</text>`;
+  const fillFor = (n) => (n ? `rgba(245,184,74,${(0.2 + 0.6 * Math.sqrt(n / mxc)).toFixed(2)})` : '#123044');
+  const CTY = GEO.counties || {};
+  const LBL = GEO.countyLabels || {};
+  const counties = Object.entries(CTY).map(([name, r], i) => `<path class="rise" style="--d:${2 + i * 0.3}" d="${ring(r)}" fill="${fillFor(counts[name] || 0)}" stroke="rgba(60,198,216,.55)" stroke-width="1.2" stroke-linejoin="round"><title>${esc(name)}: ${counts[name] || 0} activities</title></path>`).join('');
+  const outline = GEO.Liberia ? `<path d="${path(GEO.Liberia)}" fill="none" stroke="#3cc6d8" stroke-width="2.6" stroke-linejoin="round"/>` : '';
+  const CALLOUT = { Montserrado: [-11.12, 6.12], Margibi: [-10.42, 5.93], Bomi: [-10.56, 7.17] }; // small coastal counties: label beside, with a leader line
+  const labels = Object.entries(LBL).map(([name, [lo0, la0]]) => {
+    const n = counts[name] || 0;
+    const co = CALLOUT[name];
+    const [lo, la] = co || [lo0, la0];
+    const x = X(lo), y = Y(la);
+    const halo = 'paint-order="stroke" stroke="#061019" stroke-width="4" stroke-linejoin="round"';
+    const lead = co ? `<line x1="${X(lo0)}" y1="${Y(la0)}" x2="${x}" y2="${y - (n ? 10 : 0)}" stroke="#e8f1f4" stroke-width="1.4" opacity=".7"/><circle cx="${X(lo0)}" cy="${Y(la0)}" r="3.5" fill="#e8f1f4"/>` : '';
+    return `<g class="rise" style="--d:${6 + (n ? 0 : 2)}">${lead}${n ? `<text x="${x}" y="${y + 4}" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="${clamp(22 + Math.sqrt(n / mxc) * 18, 22, 40)}" fill="#fff" ${halo}>${n}</text>` : ''}<text x="${x}" y="${y + (n ? 24 : 5)}" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="${n ? 600 : 400}" fill="${n ? '#e8f1f4' : '#8fa7b6'}" ${halo}>${esc(name)}</text></g>`;
+  }).join('');
+  const marks = M.points.map((p, i) => { const x = X(p.lon), y = Y(p.lat); const col = p.kind === 'study' ? (p.exceed ? '#ff6b5e' : '#3ddc97') : p.kind === 'reading' ? '#c39bff' : '#3cc6d8'; return `<g class="rise" style="--d:${8 + i}"><path d="M${x} ${y - 14} L${x + 11} ${y + 7} L${x - 11} ${y + 7} Z" fill="${col}" stroke="#061019" stroke-width="2"/></g>`; }).join('');
+  const sea = `<text x="${X(-10.2)}" y="${Y(4.75)}" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="6" fill="#2a4a63">ATLANTIC OCEAN</text>`
+    + `<text x="${X(-11.6)}" y="${Y(8.35)}" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="4" fill="#2a4a63">SIERRA LEONE</text>`
+    + `<text x="${X(-9.3)}" y="${Y(8.66)}" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="4" fill="#2a4a63">GUINEA</text>`
+    + `<text x="${X(-7.6)}" y="${Y(7.0)}" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="4" fill="#2a4a63" transform="rotate(-72 ${X(-7.6)} ${Y(7.0)})">CÔTE D'IVOIRE</text>`;
+  const credit = GEO.counties ? `<text x="8" y="${H - 8}" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#3d566a">County boundaries: UNMIL, OCHA ROWCA via geoBoundaries (CC BY 3.0 IGO)</text>` : '';
   const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]);
   const total = ranked.reduce((a, x) => a + x[1], 0);
-  return `${head('Where we work', 'Field activity across Liberia', `Circles show activities by county from the reports on the wall; triangles mark sampling sites with results.`, 'ERRS')}
+  const scale = `<div style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--dim);margin-top:4px"><span>0</span><span style="flex:1;height:12px;border-radius:6px;background:linear-gradient(90deg,#123044,rgba(245,184,74,.35),rgba(245,184,74,.8))"></span><span>${mxc} activities</span></div>`;
+  return `${head('Where we work', 'Field activity across Liberia\'s 15 counties', `Shading shows activities per county from the reports on the wall. Triangles mark sampling sites.`, 'ERRS')}
   <div class="grid" style="grid-template-columns:${W + 40}px 1fr">
-    <div class="card rise" style="--d:1;padding:10px;display:grid;place-items:center;background:#08141e"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="Map of Liberia">${neigh}${lib}${sea}${bubbles}${labels}${marks}</svg></div>
+    <div class="card rise" style="--d:1;padding:10px;display:grid;place-items:center;background:#08141e"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="Map of Liberia's counties">${neigh}${counties}${outline}${sea}${labels}${marks}${credit}</svg></div>
     <div style="display:flex;flex-direction:column;gap:22px;min-height:0">
-      <div class="card rise" style="--d:2"><h3>Activities by county</h3>${ranked.slice(0, 8).map(([c, n], i) => `<div style="display:grid;grid-template-columns:200px 1fr 60px;gap:14px;align-items:center;margin-bottom:12px;font-size:20px"><span>${esc(c)}</span><span class="track" style="margin:0"><i class="grow" style="--d:${3 + i};width:${n / ranked[0][1] * 100}%;background:var(--amber)"></i></span><b class="mono" style="text-align:right">${n}</b></div>`).join('') || '<div style="color:var(--dim)">No county named in the reports yet.</div>'}<div style="color:var(--dim);font-size:16px;margin-top:6px">${total} activities with a county</div></div>
+      <div class="card rise" style="--d:2"><h3>Activities by county</h3>${ranked.slice(0, 8).map(([c, n], i) => `<div style="display:grid;grid-template-columns:200px 1fr 60px;gap:14px;align-items:center;margin-bottom:12px;font-size:20px"><span>${esc(c)}</span><span class="track" style="margin:0"><i class="grow" style="--d:${3 + i};width:${n / ranked[0][1] * 100}%;background:var(--amber)"></i></span><b class="mono" style="text-align:right">${n}</b></div>`).join('') || '<div style="color:var(--dim)">No county named in the reports yet.</div>'}<div style="color:var(--dim);font-size:16px;margin:6px 0 8px">${total} activities in ${ranked.length} of 15 counties</div>${scale}</div>
       <div class="card rise" style="--d:4;flex:1"><h3>Sampling and measurement sites</h3>${M.points.slice(0, 7).map((p) => `<div style="display:flex;gap:14px;align-items:center;margin-bottom:12px;font-size:19px"><svg width="22" height="22" viewBox="-12 -16 24 26"><path d="M0 -16 L12 8 L-12 8 Z" fill="${p.kind === 'study' ? (p.exceed ? '#ff6b5e' : '#3ddc97') : p.kind === 'reading' ? '#c39bff' : '#3cc6d8'}"/></svg><span style="flex:1;min-width:0">${esc(p.name)}</span><span class="mono" style="color:var(--dim);font-size:16px">${p.kind === 'study' ? `${p.n} samples${p.exceed ? ` · ${p.exceed} over` : ''}` : p.kind === 'reading' ? `${p.n} readings` : ''}</span></div>`).join('') || '<div style="color:var(--dim)">No coordinates in the reports yet.</div>'}
       <div class="legend" style="margin-top:8px"><span><i style="background:#ff6b5e"></i>Results over the standard</span><span><i style="background:#3ddc97"></i>Within standard</span><span><i style="background:#c39bff"></i>Field readings</span></div></div>
     </div>

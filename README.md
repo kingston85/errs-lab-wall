@@ -36,4 +36,4 @@ npm run dist       # Windows installer + portable exe in dist/ (run on Windows)
 
 Every push to `main` builds the Windows installer on GitHub Actions and publishes it as a release.
 
-Map outline: Natural Earth (public domain) via world-atlas. Fonts: Barlow Condensed, IBM Plex Sans and IBM Plex Mono (SIL Open Font Licence).
+Map outline: Natural Earth (public domain) via world-atlas. County boundaries: UNMIL, OCHA ROWCA via geoBoundaries (CC BY 3.0 IGO). Fonts: Barlow Condensed, IBM Plex Sans and IBM Plex Mono (SIL Open Font Licence).
