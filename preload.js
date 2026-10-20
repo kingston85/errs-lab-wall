@@ -25,6 +25,8 @@ contextBridge.exposeInMainWorld('desktop', {
   chooseDir: () => call('settings:chooseDir'),
   resetDir: () => call('settings:resetDir'),
   openDir: () => call('settings:openDir'),
+  exportBackup: () => call('backup:export'),
+  importBackup: () => call('backup:import'),
   onDbChanged: (fn) => ipcRenderer.on('db-changed', (_, col) => fn(col)),
   onAskDelta: (fn) => ipcRenderer.on('ask-delta', (_, id, text) => fn(id, text)),
 });

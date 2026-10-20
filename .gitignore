@@ -3,3 +3,6 @@ dist/
 renderer/index.html
 renderer/app.js
 *.log
+mobile/www/
+mobile/android/
+mobile/gradle.log

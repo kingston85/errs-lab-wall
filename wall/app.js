@@ -699,20 +699,20 @@ function sceneNotices() {
 function photoList() {
   return [...S.photos].filter((p) => p.assetId).sort((a, b) => String(b.date || b.createdAt || '').localeCompare(String(a.date || a.createdAt || ''))).slice(0, 12);
 }
-const photoUrl = (p) => '/_blob/' + p.assetId;
+const photoUrl = (p) => (window.__blobUrl ? window.__blobUrl(p.assetId) : '/_blob/' + p.assetId); // the Android app serves stored photos itself
 function scenePhotos() {
   const ps = photoList();
   const p = ps[0];
   return `${head('From the field', 'Our work in pictures', `${ps.length} recent photo${ps.length === 1 ? '' : 's'} from sampling, inspections and the lab`, 'ERRS')}
   <div class="grid" style="grid-template-columns:1fr 300px">
     <div class="card rise photo-main" style="--d:1;padding:0" data-photo-main>${photoFigure(p)}</div>
-    <div style="display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden" data-strip>${ps.map((x, i) => `<div class="thumb${i === 0 ? ' on' : ''}" data-i="${i}"><img src="${esc(photoUrl(x))}" alt="" loading="lazy"></div>`).join('')}</div>
+    <div style="display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden" data-strip>${ps.map((x, i) => `<div class="thumb${i === 0 ? ' on' : ''}" data-i="${i}"><img src="${esc(photoUrl(x))}" data-blob="${esc(x.assetId)}" alt="" loading="lazy"></div>`).join('')}</div>
   </div>`;
 }
 function photoFigure(p) {
   if (!p) return '';
   const meta = [p.place, p.date ? fmtDate(p.date) : '', p.unit && p.unit !== 'ERRS' ? p.unit : ''].filter(Boolean).join(' · ');
-  return `<figure><img src="${esc(photoUrl(p))}" alt="${esc(p.caption || 'Field photo')}" onerror="this.closest('figure').classList.add('broken')"><figcaption><b>${esc(p.caption || '')}</b>${meta ? `<span>${esc(meta)}</span>` : ''}</figcaption><div class="ph-miss">Photo not available on this screen</div></figure>`;
+  return `<figure><img src="${esc(photoUrl(p))}" data-blob="${esc(p.assetId)}" alt="${esc(p.caption || 'Field photo')}" onerror="this.closest('figure').classList.add('broken')"><figcaption><b>${esc(p.caption || '')}</b>${meta ? `<span>${esc(meta)}</span>` : ''}</figcaption><div class="ph-miss">Photo not available on this screen</div></figure>`;
 }
 function mountPhotos(el, durMs) {
   const ps = photoList();
@@ -855,7 +855,7 @@ function panePhotos() {
     <label class="f">Unit<select id="pUnit">${unitOptions('EMRU')}</select></label>
     <div class="row"><button class="btn pri" data-act="addPhotos" ${S.assets && S.db && S.canWrite !== false ? '' : 'disabled'}>Upload to the wall</button><span id="pStatus" style="font-size:13px;color:var(--dim)"></span></div>
   </div>
-  <div class="pgrid">${ps.map((p) => `<div class="rep" data-pid="${esc(p.id)}" style="padding:8px"><img src="${esc(photoUrl(p))}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:#071420"><input data-pcap value="${esc(p.caption || '')}" maxlength="140" style="background:#071420;border:1px solid var(--line2);border-radius:8px;padding:6px 8px;color:var(--ink);font-size:13px" ${ro()}><div class="row" style="gap:6px"><small>${esc(p.date ? fmtDate(p.date) : '')}</small><span style="flex:1"></span><button class="btn" style="padding:6px 10px" data-act="capPhoto" ${ro()}>Save</button><button class="btn dng" style="padding:6px 10px" data-act="delPhoto" ${S.assets ? '' : 'disabled'}>Delete</button></div></div>`).join('')}</div>`;
+  <div class="pgrid">${ps.map((p) => `<div class="rep" data-pid="${esc(p.id)}" style="padding:8px"><img src="${esc(photoUrl(p))}" data-blob="${esc(p.assetId)}" alt="" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:#071420"><input data-pcap value="${esc(p.caption || '')}" maxlength="140" style="background:#071420;border:1px solid var(--line2);border-radius:8px;padding:6px 8px;color:var(--ink);font-size:13px" ${ro()}><div class="row" style="gap:6px"><small>${esc(p.date ? fmtDate(p.date) : '')}</small><span style="flex:1"></span><button class="btn" style="padding:6px 10px" data-act="capPhoto" ${ro()}>Save</button><button class="btn dng" style="padding:6px 10px" data-act="delPhoto" ${S.assets ? '' : 'disabled'}>Delete</button></div></div>`).join('')}</div>`;
 }
 function paneSamples() {
   const order = Object.fromEntries(SAMPLE_STAGES.map(([k], i) => [k, i]));
@@ -1063,6 +1063,7 @@ function pokeHud() {
   hudT = setTimeout(() => { if ($('#manage').hidden) { $('#hud').classList.add('hide'); document.body.style.cursor = 'none'; } }, 3500);
 }
 async function toggleFull() {
+  if (window.__toggleFull) { window.__toggleFull(); return; }
   try {
     if (document.fullscreenElement) await document.exitFullscreen();
     else await document.documentElement.requestFullscreen();
@@ -1153,7 +1154,7 @@ function paneReports() {
   ${rs.map((r) => `<div class="rep" data-rid="${esc(r.id)}"><div class="tt"><b>${esc(r.title)}</b><small>${esc(r.period?.label || '')}</small></div>
     <div class="mini"><span>${esc(r.kind || 'other')}</span><span>${esc(r.unit || 'ERRS')}</span>${counts(r).slice(0, 5).map((c) => `<span>${esc(c)}</span>`).join('')}</div>
     <div class="row"><label class="switch"><input type="checkbox" data-act="toggle" ${r.enabled !== false ? 'checked' : ''} ${S.canWrite === false || !S.db ? 'disabled' : ''}>On the wall</label>
-      <span style="flex:1"></span>${r.assetId ? `<a class="btn" href="${esc('/_blob/' + r.assetId)}" target="_blank" rel="noopener">Original</a>` : ''}
+      <span style="flex:1"></span>${r.assetId && !window.__noBlobLinks ? `<a class="btn" href="${esc('/_blob/' + r.assetId)}" target="_blank" rel="noopener">Original</a>` : ''}
       <button class="btn" data-act="edit" ${S.canWrite === false || !S.db ? 'disabled' : ''}>Edit</button><button class="btn dng" data-act="del" ${S.canWrite === false || !S.db ? 'disabled' : ''}>Delete</button></div>
     <div data-slot></div></div>`).join('')}
   <details class="rep"><summary style="cursor:pointer;font-weight:600">Add data as JSON</summary><p style="color:var(--dim);font-size:13px;line-height:1.5">Paste a report in the wall's data format, for example one exported from another wall.</p><label class="f"><textarea class="code" id="pasteJson" placeholder='{"title": "...", "period": {"label": "Q4 2026", "year": 2026, "quarter": 4}, "headline": [...]}'></textarea></label><div class="row"><button class="btn pri" data-act="paste" ${S.db && S.canWrite !== false ? '' : 'disabled'}>Add to the wall</button></div></details>`;
@@ -1641,7 +1642,7 @@ async function connect() {
     if (S.loaded) rebuild();
   }, () => {});
 }
-function renderIfOpen() { if (!$('#manage').hidden && S.tab !== 'upload') renderPane(); else if (!$('#manage').hidden) { const p = $('#pane'); if (!p.querySelector('textarea:focus,input:focus')) renderPane(); } }
+function renderIfOpen() { if (S.tab === 'computer') return; if (!$('#manage').hidden && S.tab !== 'upload') renderPane(); else if (!$('#manage').hidden) { const p = $('#pane'); if (!p.querySelector('textarea:focus,input:focus')) renderPane(); } }
 
 addEventListener('resize', fitStage);
 try { new ResizeObserver(fitStage).observe($('#wrap')); } catch { /* older browser */ }

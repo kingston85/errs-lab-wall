@@ -1,0 +1,24 @@
+{
+  "name": "errs-lab-wall-android",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ERRS Lab Wall for Android phones, tablets and Android TV",
+  "scripts": {
+    "build": "node ../tools/build-renderer.js mobile"
+  },
+  "dependencies": {
+    "@capacitor/android": "6.2.2",
+    "@capacitor/app": "6.0.3",
+    "@capacitor/core": "6.2.2",
+    "@capacitor/filesystem": "6.0.4",
+    "@capacitor/share": "6.0.4",
+    "@fontsource/barlow-condensed": "5.1.0",
+    "@fontsource/ibm-plex-mono": "5.1.0",
+    "@fontsource/ibm-plex-sans": "5.1.0",
+    "jszip": "3.10.1",
+    "pdfjs-dist": "3.11.174"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "6.2.2"
+  }
+}

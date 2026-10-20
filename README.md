@@ -14,6 +14,14 @@ Drop in a report (PDF, Word, PowerPoint, Excel or text) and Claude reads it and 
 
 If Smart App Control blocks the installer, it cannot be allowed for an unsigned app; use a PC with Smart App Control off, or ask for a signed build.
 
+## Install on Android (phone, tablet or Android TV)
+
+1. On the device, open the latest release and download `ERRS-Lab-Wall-Android-<version>.apk`.
+2. Open it. When Android asks, allow your browser or file manager to install unknown apps.
+3. The wall opens full screen with the screen kept on. On an Android TV it appears in the apps row; use the remote's ← → to change slides.
+
+Android keeps its own copy of the data. To move data between the Windows app and Android, use **Backup and move data** (Reports → Computer on Windows, Reports → Device on Android): save a backup on one and open it on the other.
+
 ## First-time setup (on the PC)
 
 Press **M** (or move the mouse and click **Reports**), then open the **Computer** tab:
@@ -30,10 +38,13 @@ Keys: **F11** full screen · **← →** change slide · **Space** pause · **M*
 npm install
 npm start          # builds renderer/ from wall/ and runs the app
 npm run dist       # Windows installer + portable exe in dist/ (run on Windows)
+
+cd mobile && npm install && npm run build   # Android web bundle in mobile/www
+npx cap add android && python3 patch-android.py 1.0.0 1 && cd android && ./gradlew assembleRelease
 ```
 
 `wall/` holds the display page itself (the same page as the online version); `tools/build-renderer.js` assembles it with the bundled fonts and libraries. `main.js` is the desktop shell (data folder, file store, Anthropic API); `renderer/desktop.js` connects the page to it.
 
-Every push to `main` builds the Windows installer on GitHub Actions and publishes it as a release.
+Every push to `main` builds the Windows installer and the Android APK on GitHub Actions and publishes them as a release. `mobile/src/mobile.js` connects the page to on-device storage and the Anthropic API on Android.
 
 Map outline: Natural Earth (public domain) via world-atlas. County boundaries: UNMIL, OCHA ROWCA via geoBoundaries (CC BY 3.0 IGO). Fonts: Barlow Condensed, IBM Plex Sans and IBM Plex Mono (SIL Open Font Licence).

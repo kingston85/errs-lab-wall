@@ -152,6 +152,54 @@ function findBlob(id) {
   return null;
 }
 
+// -------------------------------------------------------------------- backup
+// One JSON file holding every report, notice, sample, photo and original PDF.
+// The Android app reads and writes the same format, so data can move between them.
+const BACKUP_FORMAT = 'errs-lab-wall-backup';
+async function exportBackup(win) {
+  const r = await dialog.showSaveDialog(win, {
+    title: 'Save a backup of the wall',
+    defaultPath: path.join(app.getPath('documents'), `ERRS-Lab-Wall-backup-${new Date().toISOString().slice(0, 10)}.json`),
+    filters: [{ name: 'Wall backup', extensions: ['json'] }],
+  });
+  if (r.canceled || !r.filePath) return null;
+  const out = { format: BACKUP_FORMAT, version: 1, created: new Date().toISOString(), source: os.hostname(), collections: {}, files: [] };
+  let docs = 0;
+  for (const col of COLLECTIONS) { out.collections[col] = await listDocs(col); docs += out.collections[col].length; }
+  let names = [];
+  try { names = await fsp.readdir(blobDir()); } catch { /* no files yet */ }
+  for (const n of names) {
+    const m = n.match(/^([0-9a-f]{32})(\.\w+)$/);
+    const type = m && Object.keys(TYPES).find((t) => TYPES[t] === m[2]);
+    if (type) out.files.push({ id: m[1], type, data: (await fsp.readFile(path.join(blobDir(), n))).toString('base64') });
+  }
+  await fsp.writeFile(r.filePath, JSON.stringify(out));
+  return { path: r.filePath, docs, files: out.files.length };
+}
+async function importBackup(win) {
+  const r = await dialog.showOpenDialog(win, { title: 'Open a wall backup', properties: ['openFile'], filters: [{ name: 'Wall backup', extensions: ['json'] }] });
+  if (r.canceled || !r.filePaths[0]) return null;
+  let b;
+  try { b = JSON.parse(await fsp.readFile(r.filePaths[0], 'utf8')); } catch { throw new Error('That file is not a wall backup.'); }
+  if (!b || b.format !== BACKUP_FORMAT) throw new Error('That file is not a wall backup.');
+  let docs = 0, files = 0;
+  for (const col of COLLECTIONS) {
+    for (const d of Array.isArray(b.collections?.[col]) ? b.collections[col] : []) {
+      if (!d || typeof d.id !== 'string' || !SAFE.test(d.id) || d.id.startsWith('.') || !d.data || typeof d.data !== 'object') continue;
+      await writeJson(path.join(dbDir(col), d.id + '.json'), d.data);
+      docs++;
+    }
+    changed(col);
+  }
+  await fsp.mkdir(blobDir(), { recursive: true });
+  for (const f of Array.isArray(b.files) ? b.files : []) {
+    if (!f || !/^[0-9a-f]{32}$/.test(f.id) || !TYPES[f.type] || typeof f.data !== 'string') continue;
+    const file = path.join(blobDir(), f.id + TYPES[f.type]);
+    if (!fs.existsSync(file)) { await fsp.writeFile(file, Buffer.from(f.data, 'base64')); files++; }
+  }
+  return { docs, files };
+}
+
 // ------------------------------------------------------------------- protocol
 function resolveAsset(p) {
   const clean = path.posix.normalize('/' + decodeURIComponent(p)).replace(/^\/+/, '');
@@ -266,6 +314,8 @@ function wireIpc() {
     return switchDataDir(r.filePaths[0]);
   });
   handle('settings:resetDir', () => switchDataDir(path.join(app.getPath('userData'), 'wall-data')));
+  handle('backup:export', (evt) => exportBackup(BrowserWindow.fromWebContents(evt.sender)));
+  handle('backup:import', (evt) => importBackup(BrowserWindow.fromWebContents(evt.sender)));
   handle('settings:openDir', async () => { await fsp.mkdir(settings.dataDir, { recursive: true }); await shell.openPath(settings.dataDir); });
 }
 async function switchDataDir(dir) {

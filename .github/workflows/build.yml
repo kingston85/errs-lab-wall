@@ -1,4 +1,4 @@
-name: Build Windows app
+name: Build apps
 
 on:
   push:
@@ -27,24 +27,114 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - name: Read version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/ERRS-Lab-Wall-Setup-*.exe
+            dist/ERRS-Lab-Wall-Portable-*.exe
+
+  android:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install
+        run: npm ci
+
+      - name: Build the web app
+        run: npm run build
+
+      - name: Generate and patch the Android project
+        run: |
+          npx cap add android
+          npx cap sync android
+          python3 patch-android.py "$(node -p "require('./package.json').version")" "${{ github.run_number }}"
+
+      - name: Signing key
+        env:
+          KS_B64: ${{ secrets.WALL_KEYSTORE_B64 }}
+          KS_PW: ${{ secrets.WALL_KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.WALL_KEY_ALIAS }}
+          KS_KEYPW: ${{ secrets.WALL_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/wall.jks"
+            { echo "WALL_KEYSTORE=$RUNNER_TEMP/wall.jks"; echo "WALL_KEYSTORE_PASSWORD=$KS_PW"; echo "WALL_KEY_ALIAS=$KS_ALIAS"; echo "WALL_KEY_PASSWORD=$KS_KEYPW"; } >> "$GITHUB_ENV"
+          else
+            PW=$(grep -oP 'Store and key password: `\K[^`]+' signing/README.md)
+            { echo "WALL_KEYSTORE=$PWD/signing/errs-lab-wall.jks"; echo "WALL_KEYSTORE_PASSWORD=$PW"; echo "WALL_KEY_ALIAS=errslabwall"; echo "WALL_KEY_PASSWORD=$PW"; } >> "$GITHUB_ENV"
+          fi
+
+      - name: Build the APK
+        working-directory: mobile/android
+        run: |
+          set -o pipefail
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee ../gradle.log
+
+      - name: Report build error
+        if: failure()
+        run: |
+          if [ -f gradle.log ]; then
+            msg=$(grep -n -A40 -E "What went wrong|error:|FAILURE" gradle.log | head -120 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+            echo "::error title=Gradle build failed::${msg}"
+          fi
+
+      - name: Name the APK
+        run: |
+          V=$(node -p "require('./package.json').version")
+          cp android/app/build/outputs/apk/release/app-release.apk "ERRS-Lab-Wall-Android-$V.apk"
+          ls -la *.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: mobile/ERRS-Lab-Wall-Android-*.apk
+
+  release:
+    needs: [windows, android]
+    if: always() && (needs.windows.result == 'success' || needs.android.result == 'success')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Read versions
         id: v
-        shell: bash
-        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "win=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          echo "android=$(node -p "require('./mobile/package.json').version")" >> "$GITHUB_OUTPUT"
+          ls -la dist
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
-          name: ERRS Lab Wall ${{ steps.v.outputs.version }} (build ${{ github.run_number }})
+          name: ERRS Lab Wall — Windows ${{ steps.v.outputs.win }}, Android ${{ steps.v.outputs.android }} (build ${{ github.run_number }})
           make_latest: true
           body: |
-            **Install on Windows:** download `ERRS-Lab-Wall-Setup-${{ steps.v.outputs.version }}.exe` below and run it.
-            If Windows shows "Windows protected your PC", click **More info → Run anyway** (the app is not code-signed).
+            **Windows:** download `ERRS-Lab-Wall-Setup-${{ steps.v.outputs.win }}.exe` and run it. If Windows shows "Windows protected your PC", click **More info → Run anyway** (the app is not code-signed). No installation rights? Use the Portable exe.
 
-            No installation rights? Use `ERRS-Lab-Wall-Portable-${{ steps.v.outputs.version }}.exe` instead — it runs without installing.
+            **Android (phone, tablet or Android TV):** download `ERRS-Lab-Wall-Android-${{ steps.v.outputs.android }}.apk` on the device and open it. Allow "Install unknown apps" for your browser or file manager when Android asks. New versions install over the old one and keep the wall's data.
 
             Commit: ${{ github.sha }}
-          files: |
-            dist/ERRS-Lab-Wall-Setup-*.exe
-            dist/ERRS-Lab-Wall-Portable-*.exe
+          files: dist/*

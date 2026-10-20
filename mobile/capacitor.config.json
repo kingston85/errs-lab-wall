@@ -1,0 +1,7 @@
+{
+  "appId": "lr.epa.errs.labwall",
+  "appName": "ERRS Lab Wall",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "android": { "backgroundColor": "#061019" }
+}

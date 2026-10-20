@@ -106,6 +106,9 @@
       <div class="mono" style="font-size:12px;color:var(--ink);overflow-wrap:anywhere;background:#071420;border:1px solid var(--line2);border-radius:8px;padding:8px 10px">${esc(s.dataDir)}</div>
       <div style="font-size:13px;color:var(--dim);line-height:1.5">Reports, notices, samples and photos are kept here as ordinary files. To show the same wall on several computers (the big screen and your office laptop), choose a folder they all share, such as a OneDrive or network folder. Each computer checks it every few seconds.</div>
       <div class="row"><button class="btn" data-dact="chooseDir">Choose folder…</button><button class="btn" data-dact="openDir">Open folder</button>${shared ? '<button class="btn" data-dact="resetDir">Use this computer only</button>' : ''}</div></div>
+    <div class="rep"><div class="tt"><b>Backup and move data</b></div>
+      <div style="font-size:13px;color:var(--dim);line-height:1.5">Save everything on the wall (reports, notices, samples, photos and original PDFs) as one backup file. Open that file in the wall on another computer or in the Android app to copy the data there. Opening a backup adds its items and replaces items with the same name; nothing else is deleted.</div>
+      <div class="row"><button class="btn" data-dact="export">Save backup…</button><button class="btn" data-dact="import">Open backup…</button></div></div>
     <div class="rep"><div class="tt"><b>Big-screen behaviour</b></div>
       <label class="switch"><input type="checkbox" id="dFull" ${s.fullscreen ? 'checked' : ''}>Open in full screen</label>
       <label class="switch"><input type="checkbox" id="dAuto" ${s.autostart ? 'checked' : ''}>Start the wall when Windows starts</label>
@@ -128,6 +131,8 @@
         else if (act === 'chooseDir') { const d = await D.chooseDir(); if (d) { await refresh(p); note('The wall now uses this folder.', true); } }
         else if (act === 'resetDir') { await D.resetDir(); await refresh(p); note('The wall now uses this computer\'s own folder.', true); }
         else if (act === 'openDir') await D.openDir();
+        else if (act === 'export') { b.disabled = true; note('Saving…', true); const r = await D.exportBackup(); b.disabled = false; note(r ? `Saved ${r.docs} items and ${r.files} files to ${r.path}` : '', true); }
+        else if (act === 'import') { b.disabled = true; const r = await D.importBackup(); b.disabled = false; if (r) note(`Added ${r.docs} items and ${r.files} files from the backup.`, true); }
       } catch (e) { b.disabled = false; note(e.message || String(e)); }
     }));
     const full = document.getElementById('dFull'), auto = document.getElementById('dAuto');
