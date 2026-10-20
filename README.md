@@ -30,6 +30,13 @@ Press **M** (or move the mouse and click **Reports**), then open the **Computer*
 - **Data folder** — where reports, notices, samples and photos are kept as plain files. To show the same wall on several PCs (the big screen and an office laptop), point them all at one shared OneDrive or network folder.
 - **Start the wall when Windows starts** — for the big-screen PC.
 
+## Live sync, remote control and updates
+
+- **Live sync** keeps every Windows PC, phone, tablet and Android TV showing the same wall: a report, notice, photo or sample added on one appears on the others within seconds. It uses a free Firebase (Firestore) database owned by the department. Set it up once on the first device (Reports → Computer/Device → Live sync → *First device*), then paste the sync code on each other device under *Join*. Large original PDFs stay on the device that uploaded them; photos are synced at screen resolution.
+- **Phone remote:** on Windows, Reports → Remote shows a QR code. Scan it with a phone on the same network to change slides, pause, or wake the screen. With live sync, the Remote tab on any device steers every synced screen.
+- **Office hours:** Reports → Display can switch the wall to a clock-only screen outside working hours.
+- **Updates:** the Windows app downloads and installs new versions with one click (Reports → Computer); the Android app offers the new APK in Reports → Device.
+
 Keys: **F11** full screen · **← →** change slide · **Space** pause · **M** manage panel · **F5** reload · **Alt+F4** quit.
 
 ## Development

@@ -239,4 +239,16 @@ textarea.code { font-family: var(--f-mono); font-size: 12px; min-height: 320px; 
 .sbox.od { border-color: rgba(255,107,94,.7); background: rgba(255,107,94,.08); }
 .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
 @media (prefers-reduced-motion: reduce) { .photo-main img, .photo-main figure { animation: none; } }
+
+#night { position: absolute; inset: 0; z-index: 8; background: radial-gradient(1200px 700px at 50% 40%, #0a1824, #03080d); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; animation: phIn 1.2s ease both; }
+#night .nlogo { width: 120px; height: 120px; border-radius: 26px; background: #fff; padding: 5px; opacity: .85; }
+#night .nclock { font-family: var(--f-display); font-weight: 600; font-size: 260px; line-height: .9; color: #c9d8df; letter-spacing: .02em; }
+#night .ndate { font-size: 40px; color: #8fa7b6; }
+#night .nmsg { font-size: 26px; color: #5f7a8c; margin-bottom: 20px; }
+#stage.capture *, #stage.capture *::before, #stage.capture *::after { animation: none !important; transition: none !important; }
+#stage.capture .scene.out { display: none; }
+#saveMenu { position: absolute; bottom: calc(100% + 8px); right: 0; display: flex; flex-direction: column; gap: 4px; padding: 6px; border-radius: 12px; background: #0d1d2a; border: 1px solid var(--line2); box-shadow: 0 12px 30px rgba(0,0,0,.5); }
+#saveMenu button { background: transparent; border: 0; color: var(--ink); text-align: left; padding: 10px 14px; border-radius: 8px; white-space: nowrap; font-size: 14px; }
+#saveMenu button:hover, #saveMenu button:focus-visible { background: rgba(60,198,216,.15); }
+.hm .ix { font-family: var(--f-mono); font-weight: 600; border-radius: 6px; }
 </style>

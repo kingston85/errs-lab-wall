@@ -66,7 +66,7 @@
     for (const [k, v] of Object.entries(patch || {})) { if (v && typeof v === 'object' && v.__delete__ === true) delete next[k]; else next[k] = v; }
     await setDoc(col, id, next);
   }
-  async function deleteDoc(col, id) { check(col, id); await tx('docs', 'readwrite', (st) => req(st.delete(key(col, id)))); changed(col); }
+  async function deleteDoc(col, id, quiet) { check(col, id); await tx('docs', 'readwrite', (st) => req(st.delete(key(col, id)))); if (!quiet) changed(col); }
 
   const watchers = new Map();
   const watch = (col, fn) => { if (!watchers.has(col)) watchers.set(col, new Set()); watchers.get(col).add(fn); return () => watchers.get(col).delete(fn); };
@@ -91,9 +91,9 @@
     return {
       id,
       get: async () => { await ready; const d = await getDoc(col, id); return { exists: !!d, id, data: () => d || undefined }; },
-      set: (data) => setDoc(col, id, plain(data)),
-      update: (patch) => updateDoc(col, id, plain(patch)),
-      delete: () => deleteDoc(col, id),
+      set: (data) => setDoc(col, id, plain(data)).then(() => sync?.onLocalWrite(col, id)),
+      update: (patch) => updateDoc(col, id, plain(patch)).then(() => sync?.onLocalWrite(col, id)),
+      delete: () => deleteDoc(col, id).then(() => sync?.onLocalWrite(col, id)),
       onSnapshot(fn, onErr) {
         const run = () => ready.then(() => getDoc(col, id)).then((d) => fn({ exists: !!d, id, data: () => d || undefined }), (e) => onErr && onErr(e));
         run();
@@ -140,6 +140,7 @@
       const type = opts.type || blob.type;
       const id = await putFile(blob, type);
       urls.set(id, URL.createObjectURL(blob));
+      sync?.onLocalFile(id);
       return { id, url: urls.get(id), sizeBytes: blob.size, contentType: type };
     },
     async delete(id) { await tx('files', 'readwrite', (st) => req(st.delete(id))); },
@@ -221,6 +222,46 @@
   };
   sample.limits = async () => ({ images: false });
 
+  // ------------------------------------------------------------ live sync
+  const sync = window.WallSync ? window.WallSync.create({
+    list: listDocs,
+    get: getDoc,
+    put: (col, id, data) => setDoc(col, id, data, true),
+    remove: (col, id) => deleteDoc(col, id, true),
+    changed,
+    fileIds: () => tx('files', 'readonly', (st) => req(st.getAllKeys())),
+    getFile,
+    putFile: async (id, type, blob) => { await tx('files', 'readwrite', (st) => req(st.put({ type, blob }, id))); urls.delete(id); },
+  }) : null;
+  ready.then(() => sync?.resume());
+
+  // ---------------------------------------------------- saving and updates
+  async function shareBlob(name, blob, title) {
+    const FS = plugin('Filesystem'), Share = plugin('Share');
+    if (!FS || !Share) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); return; }
+    const b64 = await toB64(blob);
+    await FS.writeFile({ path: name, data: b64, directory: 'CACHE' });
+    const { uri } = await FS.getUri({ path: name, directory: 'CACHE' });
+    await Share.share({ title, files: [uri], dialogTitle: title });
+  }
+  window.__saveFile = (name, blob) => shareBlob(name, blob, 'Save or send the slide');
+  let pendingUpdate = null;
+  const newer = (a, b) => { const pa = a.split('.').map(Number), pb = b.split('.').map(Number); for (let i = 0; i < 3; i++) { if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) > (pb[i] || 0); } return false; };
+  async function checkUpdate(announce) {
+    try {
+      const res = await fetch('https://api.github.com/repos/kingston85/errs-lab-wall/releases/latest', { headers: { Accept: 'application/vnd.github+json' } });
+      if (!res.ok) return null;
+      const rel = await res.json();
+      for (const a of rel.assets || []) {
+        const m = a.name.match(/^ERRS-Lab-Wall-Android-(\d+\.\d+\.\d+)\.apk$/);
+        if (m && newer(m[1], VERSION)) { pendingUpdate = { version: m[1], url: a.browser_download_url }; if (announce) window.__wall?.toast?.(`Version ${m[1]} is available. Install it from Reports → Device.`, 8000); return pendingUpdate; }
+      }
+    } catch { /* offline */ }
+    return null;
+  }
+  setTimeout(() => checkUpdate(true), 20000);
+  setInterval(() => checkUpdate(true), 6 * 3600 * 1000);
+
   const user = { can: async () => true, canEdit: () => true, isOwner: () => true, id: async () => 'local', me: async () => ({ id: 'local', name: 'This device' }) };
   const services = { db, sample, assets, user };
   window.claude = { use: async (name) => services[name] || null };
@@ -284,6 +325,8 @@
       <label class="f">Anthropic API key<input id="dKey" type="password" autocomplete="off" placeholder="${k ? 'Paste a new key to replace the saved one' : 'sk-ant-…'}"></label>
       <label class="f">Model<select id="dModel">${MODEL_CHOICES.map(([v, l]) => `<option value="${v}" ${settings.model === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
       <div class="row"><button class="btn pri" data-dact="saveKey">Save</button><button class="btn" data-dact="testKey" ${k ? '' : 'disabled'}>Test</button>${k ? '<button class="btn dng" data-dact="clearKey">Remove key</button>' : ''}</div></div>
+    <div class="rep" id="syncBox"></div>
+    ${pendingUpdate ? `<div class="rep" style="border-color:rgba(60,198,216,.6)"><div class="tt"><b>Version ${esc(pendingUpdate.version)} is available</b><small>you have ${esc(VERSION)}</small></div><div style="font-size:13px;color:var(--dim);line-height:1.5">Tap Download, then open the downloaded file and tap Install. The wall's data is kept.</div><div class="row"><button class="btn pri" data-dact="update">Download</button></div></div>` : `<div class="rep"><div class="tt"><b>Updates</b><small>version ${esc(VERSION)}</small></div><div style="font-size:13px;color:var(--dim)">The app checks for new versions every few hours.</div><div class="row"><button class="btn" data-dact="checkUpdate">Check now</button></div></div>`}
     <div class="rep"><div class="tt"><b>Backup and move data</b></div>
       <div style="font-size:13px;color:var(--dim);line-height:1.5">The wall's reports, notices, samples and photos are kept in this app on this device. To copy them to the Windows app or another Android device, save a backup here and open it there (Windows: Reports → Computer → Open backup). Opening a backup adds its items and replaces items with the same name; nothing else is deleted.</div>
       <div class="row"><button class="btn" data-dact="export">Save or send backup…</button><label class="btn" style="display:inline-block">Open backup…<input id="dImport" type="file" accept=".json,application/json" hidden></label></div></div>
@@ -292,8 +335,10 @@
     <div id="dNote" style="font-size:13px" aria-live="polite"></div>
     <div style="font-size:12px;color:var(--dim)">ERRS Lab Wall for Android ${esc(VERSION)}</div>`;
   }
+  let unsubSync = null;
   function wire(p) {
     const rerender = () => { p.innerHTML = render(); wire(p); };
+    if (sync) { unsubSync?.(); unsubSync = window.WallSync.mountSettings(sync, esc, note); }
     p.querySelectorAll('[data-dact]').forEach((b) => b.addEventListener('click', async () => {
       const act = b.dataset.dact;
       try {
@@ -305,6 +350,8 @@
           rerender(); note('Saved.', true);
         } else if (act === 'clearKey') { settings.key = ''; rerender(); note('Key removed.', true); }
         else if (act === 'testKey') { b.disabled = true; note('Asking Claude…', true); const r = await sample('Reply with the single word: ready', { modelTier: 'quick' }); b.disabled = false; note(`Claude answered: “${r.text.trim()}”. Reading reports will work.`, true); }
+        else if (act === 'checkUpdate') { b.disabled = true; note('Checking…', true); const u = await checkUpdate(false); rerender(); note(u ? `Version ${u.version} is available.` : 'This is the latest version.', true); }
+        else if (act === 'update') { note('Opening the download…', true); window.location.href = pendingUpdate.url; }
         else if (act === 'export') { b.disabled = true; note('Preparing the backup…', true); const r = await exportBackup(); b.disabled = false; note(`Backup ready: ${r.docs} items and ${r.files} files.`, true); }
       } catch (e) { b.disabled = false; note(e.message || String(e)); }
     }));
@@ -313,7 +360,7 @@
       const f = imp.files && imp.files[0];
       if (!f) return;
       note('Opening the backup…', true);
-      try { const r = await importBackupText(await f.text()); note(`Added ${r.docs} items and ${r.files} files from the backup.`, true); } catch (e) { note(e.message || String(e)); }
+      try { const r = await importBackupText(await f.text()); note(`Added ${r.docs} items and ${r.files} files from the backup.`, true); sync?.pushAll(); } catch (e) { note(e.message || String(e)); }
       imp.value = '';
     });
   }

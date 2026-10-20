@@ -6,3 +6,4 @@ renderer/app.js
 mobile/www/
 mobile/android/
 mobile/gradle.log
+renderer/lib/

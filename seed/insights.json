@@ -1,0 +1,53 @@
+{
+ "__collection": "config",
+ "headline": "EMRU had its busiest quarter, while three annual outputs have not started",
+ "points": [
+  {
+   "title": "Environmental investigations up sharply",
+   "text": "EMRU ran 91 investigations in Q3, up from 66 in Q2 and 51 in Q1 \u2014 208 so far in 2026.",
+   "tone": "good",
+   "unit": "EMRU"
+  },
+  {
+   "title": "Three outputs have not started",
+   "text": "Basic radiation training (0 of 100), chemical disposal licences (0 of 5) and handler training sessions (0 of 2) are at zero with one quarter left.",
+   "tone": "concern",
+   "unit": "ERRS"
+  },
+  {
+   "title": "Gbai River selenium 5.9\u00d7 the limit",
+   "text": "Selenium exceeded 0.01 mg/L at 11 of 13 points below the Yuelliton slide; the Golay River control was 0.005 mg/L.",
+   "tone": "concern",
+   "unit": "EMRU"
+  },
+  {
+   "title": "CMU answered every application",
+   "text": "All 38 applications were answered in Q3 and 35 regulatory instruments were issued.",
+   "tone": "good",
+   "unit": "CMU"
+  },
+  {
+   "title": "Waste certificates lag behind",
+   "text": "WRU responded to 15 of 17 waste applications in Q3 but issued only 4 certificates.",
+   "tone": "watch",
+   "unit": "WRU"
+  },
+  {
+   "title": "Night noise above the limit everywhere",
+   "text": "All 11 night-time readings around the Peuto Dela Torres compound exceeded 55 dBA; the highest was 94.8 dBA.",
+   "tone": "concern",
+   "unit": "EMRU"
+  }
+ ],
+ "generatedAt": "2026-10-20T19:00:00.000Z",
+ "basedOn": [
+  "ERRS Consolidated Third Quarter Report 2026",
+  "ERRS Second Quarter Report 2026",
+  "ERRS First Quarter Report 2026",
+  "2026 Outputs: Status and Q4 Plan",
+  "WRU Third Quarter Report 2026",
+  "ERRS Terms of Reference",
+  "Bolo Town Water Pollution Investigation",
+  "Bonla Town AML Pollution Investigation"
+ ]
+}

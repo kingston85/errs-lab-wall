@@ -1,7 +1,7 @@
 {
   "name": "errs-lab-wall",
   "productName": "ERRS Lab Wall",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Big-screen display of the ERRS Department's laboratory work, built from its reports",
   "author": "Sahr Emmanuel, ERRS Department, EPA Liberia",
   "license": "UNLICENSED",
@@ -15,12 +15,16 @@
     "@fontsource/barlow-condensed": "5.1.0",
     "@fontsource/ibm-plex-mono": "5.1.0",
     "@fontsource/ibm-plex-sans": "5.1.0",
+    "html2canvas": "1.4.1",
+    "jspdf": "2.5.1",
     "jszip": "3.10.1",
-    "pdfjs-dist": "3.11.174"
+    "pdfjs-dist": "3.11.174",
+    "qrcode": "1.5.4"
   },
   "devDependencies": {
     "electron": "33.2.1",
-    "electron-builder": "25.1.8"
+    "electron-builder": "25.1.8",
+    "firebase": "11.10.0"
   },
   "build": {
     "appId": "lr.epa.errs.labwall",
@@ -35,7 +39,8 @@
       "!node_modules/pdfjs-dist/legacy/**",
       "!node_modules/pdfjs-dist/types/**",
       "!node_modules/pdfjs-dist/web/**",
-      "!**/*.map"
+      "!**/*.map",
+      "shared/**"
     ],
     "directories": {
       "output": "dist",

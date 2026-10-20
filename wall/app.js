@@ -31,7 +31,7 @@ const S = {
   db: null, user: null, assets: null, sample: null, canWrite: null,
   reports: [], notices: [], photos: [], samples: [], config: { ...DEFAULT_CONFIG }, loaded: false,
   scenes: [], idx: 0, key: null, paused: false, timer: 0, tStart: 0, tDur: 0, raf: 0,
-  tab: 'upload', jobs: [], wake: null,
+  tab: 'upload', jobs: [], wake: null, insights: null, wakeUntil: 0,
 };
 
 // ================================================================= helpers
@@ -249,6 +249,7 @@ function buildScenes(M) {
     return sc;
   }
   if (M.latest) sc.push({ key: 'hero', kicker: M.latest.period?.label || 'Latest report', title: 'At a glance', unit: 'ERRS', html: () => sceneHero(M) });
+  if (S.insights?.points?.length && M.count) sc.push({ key: 'insights', kicker: 'Claude\'s insights', title: 'What the reports show', unit: 'ERRS', dur: 1.3, html: sceneInsights });
   if (hasNotices) sc.push({ key: 'notices', kicker: 'Notice board', title: 'News and what is coming up', unit: 'ERRS', html: sceneNotices });
   if (M.about) sc.push({ key: 'about', kicker: 'Who we are', title: 'Mission and units', unit: 'ERRS', html: () => sceneAbout(M) });
   if (M.kpiReport) {
@@ -454,13 +455,20 @@ function sceneUnit(M, u) {
   const show = (bdsLatest.length ? bdsLatest : bds).slice(0, 2);
   const unitInfo = (M.about?.units || []).find((x) => uc(x.code) === u);
   const kp = (M.kpiReport?.kpis || []).filter((k) => uc(k.unit) === u && num(k.target) > 0 && num(k.achieved) != null);
-  const right = show.length ? show.map((b, i) => `<div class="card rise" style="--d:${6 + i * 4};flex:1"><h3>${esc(b.title)}</h3>${breakdownHtml(b, 7 + i * 4)}</div>`).join('')
-    : kp.length ? `<div class="card rise" style="--d:6;flex:1"><h3>Annual outputs</h3>${kp.slice(0, 6).map((k, i) => { const p = num(k.achieved) / num(k.target) * 100; const st = kpiStatus(k); return `<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:19px;gap:10px"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(k.name)}</span><b class="mono" style="color:${STATUS[st].color}">${Math.round(p)}%</b></div><div class="track"><i class="grow" style="--d:${7 + i};width:${clamp(p, 0, 100)}%;background:${STATUS[st].color}"></i></div></div>`; }).join('')}</div>`
-    : `<div class="card rise" style="--d:6;flex:1"><h3>Recent work</h3>${M.activities.filter((a) => a.unit === u).slice(0, 6).map((a) => `<div style="font-size:19px;line-height:1.4;margin-bottom:10px"><span class="mono" style="color:var(--dim)">${esc(fmtDate(a.date, { day: 'numeric', month: 'short' }))}</span> ${esc(a.title)}</div>`).join('')}</div>`;
+  // right column: up to two panels — the unit's breakdowns first, then its annual outputs, then recent work
+  const acts = M.activities.filter((a) => a.unit === u);
+  const panels = show.map((b, i) => `<div class="card rise" style="--d:${6 + i * 4};flex:1"><h3>${esc(b.title)}</h3>${breakdownHtml(b, 7 + i * 4)}</div>`);
+  const nOut = panels.length ? 4 : 6;
+  if (panels.length < 2 && kp.length) panels.push(`<div class="card rise" style="--d:${6 + panels.length * 4};flex:1"><h3>Annual outputs · ${esc(M.kpiReport?.period?.label || '')}</h3>${kp.sort((a, b) => num(b.achieved) / num(b.target) - num(a.achieved) / num(a.target)).slice(0, nOut).map((k, i) => { const p = num(k.achieved) / num(k.target) * 100; const st = kpiStatus(k); return `<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:18px;gap:10px"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(k.name)}</span><b class="mono" style="color:${STATUS[st].color}">${nf(num(k.achieved))}/${nf(num(k.target))}</b></div><div class="track" style="margin-top:6px"><i class="grow" style="--d:${7 + i};width:${clamp(p, 0, 100)}%;background:${STATUS[st].color}"></i></div></div>`; }).join('')}</div>`);
+  if (panels.length < 2 && acts.length) panels.push(`<div class="card rise" style="--d:${6 + panels.length * 4};flex:1"><h3>Recent work</h3>${acts.slice(0, panels.length ? 4 : 7).map((a) => `<div style="font-size:18px;line-height:1.4;margin-bottom:10px"><span class="mono" style="color:var(--dim)">${esc(fmtDate(a.date, { day: 'numeric', month: 'short' }) || '')}</span> ${esc(a.title)}</div>`).join('')}</div>`);
+  const right = panels.join('');
+  // middle: trends, topped up with recent activity when there are few trends
+  const fewTrends = trends.length <= 2;
+  const midExtra = fewTrends && acts.length && !panels.some((x) => x.includes('<h3>Recent work</h3>')) ? `<div style="margin-top:26px;border-top:1px solid var(--line);padding-top:18px"><h3>Recent work</h3>${acts.slice(0, trends.length ? 4 : 7).map((a) => `<div style="font-size:18px;line-height:1.4;margin-bottom:10px"><span class="mono" style="color:var(--dim)">${esc(fmtDate(a.date, { day: 'numeric', month: 'short' }) || '')}</span> ${esc(a.title)}<span style="color:var(--dim)">${a.county ? ' · ' + esc(a.county) : ''}</span></div>`).join('')}</div>` : '';
   return `<div class="u-${u}" style="display:contents">${head(`${u} · ${latestLabel || ''}`, UNITS[u].name, unitInfo ? `Head of unit: ${unitInfo.head}${unitInfo.remit ? ' · ' + unitInfo.remit : ''}` : '', u, srcOf(rep))}
   <div class="grid" style="grid-template-columns:400px 1fr 1fr">
     <div style="display:flex;flex-direction:column;gap:18px;min-height:0">${stats.slice(0, 4).map((x, i) => `<div class="card rise" style="--d:${2 + i};border-left:5px solid var(--u);padding:18px 22px;flex:1"><div class="big" style="font-size:${stats.length > 3 ? 70 : 88}px" data-count="${x.v ?? ''}">${esc(nf(x.v))}</div><div style="font-size:20px;font-weight:600;margin-top:6px">${esc(x.label)}</div>${x.note ? `<div style="color:var(--dim);font-size:16px;margin-top:4px">${esc(x.note)}</div>` : ''}</div>`).join('')}</div>
-    <div class="card rise" style="--d:4"><h3>Quarter by quarter</h3>${trends.length ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px 30px">${trends.map((s, i) => `<div><div style="font-size:19px;font-weight:600;margin-bottom:4px">${esc(s.label)}</div>${miniBars(s, 'var(--u)', 5 + i * 3)}</div>`).join('')}</div>` : `<div style="color:var(--dim);font-size:20px;line-height:1.5">Trends appear here once reports from two or more quarters are on the wall.</div>`}</div>
+    <div class="card rise" style="--d:4;display:flex;flex-direction:column"><h3>Quarter by quarter</h3>${trends.length ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px 30px">${trends.map((s, i) => `<div><div style="font-size:19px;font-weight:600;margin-bottom:4px">${esc(s.label)}</div>${miniBars(s, 'var(--u)', 5 + i * 3)}</div>`).join('')}</div>` : `<div style="color:var(--dim);font-size:20px;line-height:1.5">Trends appear here once reports from two or more quarters are on the wall.</div>`}${midExtra}</div>
     <div style="display:flex;flex-direction:column;gap:22px;min-height:0">${right}</div>
   </div></div>`;
 }
@@ -485,26 +493,34 @@ function sceneStudy(M, st) {
     params = params.map((x) => ({ ...x, s: (num(x.p.max) != null || num(x.p.min) != null ? 5 : 0) + st.rows.filter((r) => exceeds(r.values?.[x.j], x.p)).length })).sort((a, b) => b.s - a.s).slice(0, 22).sort((a, b) => a.j - b.j);
   }
   const rows = st.rows.slice(0, 18);
-  const W = 1920 - 112 - 560 - 26 - 250 - 50;
+  const IX = studyIndices(st);
+  const ixCols = IX ? 2 : 0;
+  if (IX && params.length > 20) params = params.slice(0, 20);
+  const W = 1920 - 112 - 560 - 26 - 250 - 50 - ixCols * 78;
   const cw = W / params.length;
   const ch = clamp((920 - 36 - 30 - 160 - 120) / (rows.length + 1.2), 30, 46);
   const fs = cw < 54 ? 12 : cw < 66 ? 13.5 : 15;
   const find = studyFindings(st);
   const nEx = studyExceedRows(st);
   const testN = st.rows.filter((r) => !r.control).length;
-  const grid = `<div class="hm" style="grid-template-columns:250px repeat(${params.length}, ${cw - 3}px)">
-    <div></div>${params.map(({ p }) => `<div class="ch"><b>${esc(shortParam(p.name))}</b>${esc(p.unit || '')}</div>`).join('')}
-    <div class="rh"><span style="color:var(--amber)">${st.kind === 'compliance' ? 'Permissible limit' : 'Standard'}</span></div>${params.map(({ p }) => `<div class="lim">${esc(limitText(p))}</div>`).join('')}
-    ${rows.map((r, i) => `<div class="rh rise" style="--d:${2 + i};height:${ch}px${r.control ? ';box-shadow:inset 4px 0 0 var(--good);padding-left:10px' : ''}"><b>${esc(r.code || r.label)}${r.control ? ' <span style="color:var(--good);font-size:12px;letter-spacing:.08em">CONTROL</span>' : ''}</b>${r.label && r.label !== r.code ? `<span>${esc(r.label)}</span>` : ''}</div>${params.map(({ p, j }) => { const [bg, fg] = heatColor(r.values?.[j], p); const cnum = cellNum(r.values?.[j]); return `<div class="c rise" style="--d:${2 + i};height:${ch}px;background:${bg};color:${fg};font-size:${fs}px">${esc(cw < 52 && cnum.lt ? 'ND' : cnum.txt)}</div>`; }).join('')}`).join('')}
+  const ixCell = (v, rate, i) => { const r = rate(v); return `<div class="c rise ix" style="--d:${2 + i};height:${ch}px;${r ? `background:${r[1]}26;color:${r[1]};box-shadow:inset 0 0 0 1.5px ${r[1]}` : 'color:#5f7a8c'}">${fmtIdx(v)}</div>`; };
+  const grid = `<div class="hm" style="grid-template-columns:250px repeat(${params.length}, ${cw - 3}px)${ixCols ? ' 8px repeat(2, 72px)' : ''}">
+    <div></div>${params.map(({ p }) => `<div class="ch"><b>${esc(shortParam(p.name))}</b>${esc(p.unit || '')}</div>`).join('')}${ixCols ? '<div></div><div class="ch"><b>WQI</b>index</div><div class="ch"><b>HPI</b>metals</div>' : ''}
+    <div class="rh"><span style="color:var(--amber)">${st.kind === 'compliance' ? 'Permissible limit' : 'Standard'}</span></div>${params.map(({ p }) => `<div class="lim">${esc(limitText(p))}</div>`).join('')}${ixCols ? '<div></div><div class="lim">≤ 50 good</div><div class="lim">&lt; 100</div>' : ''}
+    ${rows.map((r, i) => { const ix = IX?.rows[st.rows.indexOf(r)]; return `<div class="rh rise" style="--d:${2 + i};height:${ch}px${r.control ? ';box-shadow:inset 4px 0 0 var(--good);padding-left:10px' : ''}"><b>${esc(r.code || r.label)}${r.control ? ' <span style="color:var(--good);font-size:12px;letter-spacing:.08em">CONTROL</span>' : ''}</b>${r.label && r.label !== r.code ? `<span>${esc(r.label)}</span>` : ''}</div>${params.map(({ p, j }) => { const [bg, fg] = heatColor(r.values?.[j], p); const cnum = cellNum(r.values?.[j]); return `<div class="c rise" style="--d:${2 + i};height:${ch}px;background:${bg};color:${fg};font-size:${fs}px">${esc(cw < 52 && cnum.lt ? 'ND' : cnum.txt)}</div>`; }).join('')}${ixCols ? `<div></div>${ixCell(ix?.wqi, wqiRating, i)}${ixCell(ix?.hpi, hpiRating, i)}` : ''}`; }).join('')}
   </div>`;
+  const ixCard = IX ? `<div class="card rise" style="--d:4;padding:18px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      ${[['Water Quality Index', IX.wqiMed, wqiRating, IX.wqiBad, IX.wqiN, 'unsuitable (above 100)'], ['Heavy-metal Pollution Index', IX.hpiMed, hpiRating, IX.hpiBad, IX.hpiN, 'above the critical 100']].map(([t, v, rate, bad, n, lbl]) => { const r = rate(v); return `<div><div class="mono" style="font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)">${t}</div><div style="display:flex;align-items:baseline;gap:12px;margin-top:6px"><span class="big" style="font-size:58px;color:${r ? r[1] : 'var(--dim)'}">${fmtIdx(v)}</span><span style="font-size:18px;color:${r ? r[1] : 'var(--dim)'};font-weight:600">${r ? r[0] : 'n/a'}</span></div><div style="font-size:15px;color:var(--dim);margin-top:2px">Median of ${n} samples · ${bad} ${lbl}</div></div>`; }).join('')}
+    </div>` : '';
   const ctrl = st.rows.find((r) => r.control);
   return `${head(`${st.kind === 'compliance' ? 'Compliance monitoring' : 'Laboratory results'} · ${fmtDate(st.date) || st.report?.period?.label || ''}`, st.title, [st.place, st.matrix, st.standard].filter(Boolean).join(' · '), st.report?.unit || 'EMRU', srcOf(st.report))}
   <div class="grid" style="grid-template-columns:1fr 560px">
     <div class="card rise" style="--d:1;padding:18px 18px 14px;overflow:hidden">${grid}</div>
     <div style="display:flex;flex-direction:column;gap:22px;min-height:0">
       <div class="card rise" style="--d:3;display:flex;gap:26px;align-items:center"><div class="big" style="font-size:118px;color:${nEx ? 'var(--coral)' : 'var(--good)'}" data-count="${nEx}">${nEx}</div><div style="font-size:22px;line-height:1.4">of ${testN} ${st.kind === 'compliance' ? 'facilities' : 'samples'} ${nEx === 1 ? 'has' : 'have'} at least one value outside the ${st.kind === 'compliance' ? 'limit' : 'standard'}${ctrl ? `<div style="color:var(--dim);font-size:17px;margin-top:6px">Compared with control ${esc(ctrl.code || ctrl.label)}</div>` : ''}</div></div>
-      <div class="card rise find" style="--d:5;flex:1"><h3 style="margin-bottom:4px">Findings</h3>${find.length ? find.slice(0, 4).map((f) => `<p>${esc(f.p.name)} outside ${esc(limitText(f.p))} ${esc(f.p.unit || '')} at <b>${f.n} of ${f.of}</b> points · worst ${esc(nf(f.worst))}${f.ratio ? ` (${nf(Math.round(f.ratio * 10) / 10)}× the limit)` : ''}${f.ctrl && f.ctrl.n != null ? ` · control ${esc(f.ctrl.txt)}` : ''}</p>`).join('') : '<p class="ok">Every measured value is within its limit.</p>'}${st.note ? `<div style="color:var(--dim);font-size:16px;margin-top:auto">${esc(st.note)}</div>` : ''}</div>
-      <div class="legend rise" style="--d:7"><span><i style="background:rgba(60,198,216,.35)"></i>Within limit (darker = closer)</span><span><i style="background:rgba(255,107,94,.8)"></i>Outside limit</span><span><i style="background:rgba(255,255,255,.08)"></i>Not detected / no limit</span></div>
+      ${ixCard}
+      <div class="card rise find" style="--d:5;flex:1"><h3 style="margin-bottom:4px">Findings</h3>${find.length ? find.slice(0, IX ? 2 : 4).map((f) => `<p>${esc(f.p.name)} outside ${esc(limitText(f.p))} ${esc(f.p.unit || '')} at <b>${f.n} of ${f.of}</b> points · worst ${esc(nf(f.worst))}${f.ratio ? ` (${nf(Math.round(f.ratio * 10) / 10)}× the limit)` : ''}${f.ctrl && f.ctrl.n != null ? ` · control ${esc(f.ctrl.txt)}` : ''}</p>`).join('') : '<p class="ok">Every measured value is within its limit.</p>'}${st.note ? `<div style="color:var(--dim);font-size:16px;margin-top:auto">${esc(st.note)}</div>` : ''}</div>
+      <div class="legend rise" style="--d:7"><span><i style="background:rgba(60,198,216,.35)"></i>Within limit (darker = closer)</span><span><i style="background:rgba(255,107,94,.8)"></i>Outside limit</span><span><i style="background:rgba(255,255,255,.08)"></i>Not detected / no limit</span>${IX ? '<span>WQI: weighted arithmetic index; HPI: heavy-metal pollution index (critical value 100)</span>' : ''}</div>
     </div>
   </div>`;
 }
@@ -951,6 +967,228 @@ async function boardChange(t) {
   return true;
 }
 
+// ============================================================ water indices
+// Weighted-arithmetic Water Quality Index (Brown et al.) and the Heavy-metal
+// Pollution Index (Mohan et al.), computed from each sample's values and the
+// standards printed in the report. Values below detection count as 0.
+const METALS = { al: 'aluminium', as: 'arsenic', b: 'boron', ba: 'barium', bi: 'bismuth', cd: 'cadmium', co: 'cobalt', cr: 'chromium', cu: 'copper', fe: 'iron', hg: 'mercury', mn: 'manganese', mo: 'molybdenum', ni: 'nickel', pb: 'lead', sb: 'antimony', se: 'selenium', v: 'vanadium', zn: 'zinc', ag: 'silver' };
+function metalOf(p) {
+  const n = String(p.name).toLowerCase().trim();
+  const sym = (n.match(/\(([a-z]{1,2})\)\s*$/) || [])[1];
+  if (sym && METALS[sym]) return sym;
+  if (METALS[n]) return n;
+  for (const [s, name] of Object.entries(METALS)) if (n === name || n.startsWith(name + ' ')) return s;
+  if (n.startsWith('aluminum')) return 'al';
+  return null;
+}
+const isPH = (p) => /(^|\s)ph$/i.test(String(p.name).trim());
+function waterStudy(st) {
+  if (st.kind === 'compliance') return false;
+  const m = `${st.matrix || ''} ${st.title || ''}`.toLowerCase();
+  return /water|river|stream|creek|well|borehole|leachate/.test(m);
+}
+function indexParams(st) {
+  return st.params.map((p, j) => ({ p, j, S: num(p.max), metal: metalOf(p), ph: isPH(p) }))
+    .filter((x) => x.S != null && x.S > 0 && !/ppm|µg\/m|ug\/m/i.test(x.p.unit || ''));
+}
+function rowIndices(st, row, ip) {
+  let wq = 0, ww = 0, hq = 0, hw = 0, nW = 0, nH = 0;
+  for (const x of ip) {
+    const c = cellNum(row.values?.[x.j]);
+    if (c.n == null) continue;
+    const v = c.lt ? 0 : c.n;
+    const w = 1 / x.S;
+    let q;
+    if (x.ph) { const vo = 7; q = Math.abs(v - vo) / Math.abs(x.S - vo) * 100; } else q = v / x.S * 100;
+    wq += w * q; ww += w; nW++;
+    if (x.metal) { hq += w * (v / x.S * 100); hw += w; nH++; }
+  }
+  return { wqi: nW >= 4 ? wq / ww : null, hpi: nH >= 3 ? hq / hw : null };
+}
+function wqiRating(v) {
+  if (v == null) return null;
+  if (v <= 25) return ['Excellent', '#3ddc97'];
+  if (v <= 50) return ['Good', '#a8e05f'];
+  if (v <= 75) return ['Poor', '#f5b84a'];
+  if (v <= 100) return ['Very poor', '#ff8a5b'];
+  return ['Unsuitable', '#ff5d73'];
+}
+const hpiRating = (v) => (v == null ? null : v < 100 ? ['Below critical', '#3ddc97'] : ['Above critical', '#ff5d73']);
+function studyIndices(st) {
+  if (!waterStudy(st)) return null;
+  const ip = indexParams(st);
+  if (ip.length < 4) return null;
+  const rows = st.rows.map((r) => ({ r, ...rowIndices(st, r, ip) }));
+  const test = rows.filter((x) => !x.r.control);
+  const w = test.map((x) => x.wqi).filter((v) => v != null);
+  const h = test.map((x) => x.hpi).filter((v) => v != null);
+  if (!w.length && !h.length) return null;
+  const med = (a) => { const s = [...a].sort((x, y) => x - y); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+  return {
+    rows, metals: ip.filter((x) => x.metal).length, params: ip.length,
+    wqiMed: w.length ? med(w) : null, wqiBad: w.filter((v) => v > 100).length, wqiN: w.length,
+    hpiMed: h.length ? med(h) : null, hpiBad: h.filter((v) => v >= 100).length, hpiN: h.length,
+    ctrl: rows.find((x) => x.r.control) || null,
+  };
+}
+const fmtIdx = (v) => (v == null ? '—' : v >= 1000 ? nf(Math.round(v)) : nf(Math.round(v * 10) / 10));
+
+// ============================================================ Claude insights
+async function genInsights(quiet) {
+  if (!S.sample || !S.db) { if (!quiet) toast('Claude is not available in this view.'); return false; }
+  if (!enabledReports().length) return false;
+  S.insightsBusy = true;
+  try {
+    const prompt = `You brief the staff of the ERRS Department (Environmental Protection Agency of Liberia) on a big screen in their laboratory. From the report data below, write what matters most right now.
+
+Reply with ONLY this JSON:
+{"headline": "one sentence, under 120 characters, the single most important message",
+ "points": [{"title": "under 60 characters", "text": "one or two plain sentences with the numbers, under 230 characters", "tone": "good" | "watch" | "concern", "unit": "ERRS" | "CMU" | "EMRU" | "RSU" | "WRU"}]}
+
+Write 6 points: what improved, what is behind or at risk, notable laboratory findings (exceedances against standards), and how the latest quarter compares with earlier ones. Use only numbers in the data; never invent figures.
+
+DATA (JSON):
+${askContext()}`;
+    const r = await S.sample.json(prompt, { modelTier: 'default' });
+    const points = arr(r?.points).slice(0, 6).map((p) => ({ title: str(p.title, 80), text: str(p.text, 300), tone: ['good', 'watch', 'concern'].includes(p.tone) ? p.tone : 'watch', unit: normUnit(p.unit) })).filter((p) => p.title && p.text);
+    if (!points.length) throw new Error('Claude returned no insights.');
+    await S.db.doc('config/insights').set({ headline: str(r.headline, 160), points, generatedAt: new Date().toISOString(), basedOn: enabledReports().map((x) => x.title).slice(0, 20) });
+    if (!quiet) toast('The insights slide is updated.');
+    return true;
+  } catch (e) {
+    if (!quiet) toast(errText(e));
+    return false;
+  } finally { S.insightsBusy = false; }
+}
+function sceneInsights() {
+  const I = S.insights;
+  const tone = { good: ['#3ddc97', 'Going well'], watch: ['#f5b84a', 'Watch'], concern: ['#ff6b5e', 'Needs action'] };
+  const pts = I.points.slice(0, 6);
+  return `${head('Claude\'s insights', I.headline || 'What the reports show', `Written by Claude from ${I.basedOn?.length || 'the'} reports on the wall · ${fmtDate(I.generatedAt)} · check figures against the reports`, 'ERRS')}
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr">
+    ${pts.map((p, i) => { const [c, l] = tone[p.tone] || tone.watch; return `<div class="card rise u-${uc(p.unit)}" style="--d:${2 + i};border-top:5px solid ${c};display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:10px;align-items:center"><span class="chip" style="color:${c};border-color:${c}">${l}</span>${p.unit && p.unit !== 'ERRS' ? `<span class="chip" style="color:var(--u);border-color:var(--u)">${esc(p.unit)}</span>` : ''}</div>
+      <div style="font-size:31px;font-weight:600;line-height:1.22">${esc(p.title)}</div>
+      <div style="font-size:23px;line-height:1.45;color:#cfe0e7">${esc(p.text)}</div></div>`; }).join('')}
+  </div>`;
+}
+
+// ============================================================ office hours
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+function schedule() { return { on: false, days: [1, 2, 3, 4, 5], start: '08:00', end: '17:00', ...(S.config.schedule || {}) }; }
+const hm = (s) => { const [h, m] = String(s || '0:0').split(':').map(Number); return (h || 0) * 60 + (m || 0); };
+function isClosed(now = new Date()) {
+  const sc = schedule();
+  if (!sc.on) return false;
+  if (S.wakeUntil && Date.now() < S.wakeUntil) return false;
+  const mins = now.getHours() * 60 + now.getMinutes();
+  return !(sc.days.includes(now.getDay()) && mins >= hm(sc.start) && mins < hm(sc.end));
+}
+function nextOpening(now = new Date()) {
+  const sc = schedule();
+  for (let i = 0; i < 8; i++) {
+    const d = new Date(now); d.setDate(now.getDate() + i);
+    if (!sc.days.includes(d.getDay())) continue;
+    const open = hm(sc.start);
+    if (i === 0 && now.getHours() * 60 + now.getMinutes() >= open) continue;
+    return `${sc.start} ${i === 0 ? 'today' : i === 1 ? 'tomorrow' : 'on ' + DAY_NAMES[d.getDay()]}`;
+  }
+  return '';
+}
+function updateNight() {
+  const closed = isClosed();
+  let n = $('#night');
+  if (!closed) { if (n) n.remove(); S.night = false; return; }
+  S.night = true;
+  if (!n) {
+    n = document.createElement('div');
+    n.id = 'night';
+    $('#stage').appendChild(n);
+  }
+  const d = new Date();
+  const logo = $('.brand .logo')?.src;
+  n.innerHTML = `${logo ? `<img src="${logo}" alt="" class="nlogo">` : ''}<div class="nclock">${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
+    <div class="ndate">${esc(d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))}</div>
+    <div class="nmsg">${esc(S.config.title || DEFAULT_CONFIG.title)} · ${nextOpening(d) ? `the wall resumes at ${esc(nextOpening(d))}` : 'outside office hours'}</div>
+    <button class="btn" data-act="wake">Show the wall for 30 minutes</button>`;
+}
+
+// ============================================================ remote control
+// Any copy of the wall can steer the others through the shared config/remote
+// document: the web wall through its database, the apps through live sync.
+const DEVICE = Math.random().toString(36).slice(2, 10);
+function remoteCmd(cmd, key) {
+  if (cmd === 'next') show(S.idx + 1);
+  else if (cmd === 'prev') show(S.idx - 1);
+  else if (cmd === 'pause') setPaused(true);
+  else if (cmd === 'play') setPaused(false);
+  else if (cmd === 'toggle') setPaused(!S.paused);
+  else if (cmd === 'goto') { const i = S.scenes.findIndex((s) => s.key === key); if (i >= 0) { S.wakeUntil = Math.max(S.wakeUntil || 0, Date.now() + 10 * 60000); updateNight(); show(i); } }
+  else if (cmd === 'wake') { S.wakeUntil = Date.now() + 30 * 60000; updateNight(); }
+  else if (cmd === 'sleep') { S.wakeUntil = 0; updateNight(); }
+  pokeHud();
+}
+function onRemoteDoc(d) {
+  const first = !S.remoteSeen;
+  S.remoteSeen = true;
+  if (!d || !isNum(d.ts) || d.ts <= (S.remoteTs || 0)) return;
+  S.remoteTs = d.ts;
+  if (first || d.by === DEVICE || Date.now() - d.ts > 60000) return; // ignore our own and stale commands
+  remoteCmd(d.cmd, d.key);
+}
+async function sendRemote(cmd, key) {
+  remoteCmd(cmd, key); // this screen follows too
+  if (!S.db) return;
+  try { await S.db.doc('config/remote').set({ cmd, key: key || null, ts: Date.now(), by: DEVICE }); toast('Sent to the wall screens.'); } catch (e) { toast(`Could not send: ${e?.message || e?.code}`); }
+}
+function paneRemote() {
+  const all = buildScenesAll();
+  return `${capNote()}<div style="color:var(--dim);font-size:14px;line-height:1.5">Steer every screen showing this wall: ${window.desktop ? 'screens that share this wall through live sync (Computer tab)' : window.__desktopPane ? 'screens that share this wall through live sync (Device tab)' : 'every screen that has this wall open'} follow these buttons within a few seconds.</div>
+  <div class="row" style="gap:8px"><button class="btn" data-act="rc" data-cmd="prev">◀ Previous</button><button class="btn" data-act="rc" data-cmd="toggle">Pause / play</button><button class="btn" data-act="rc" data-cmd="next">Next ▶</button></div>
+  <div class="row" style="gap:8px"><button class="btn" data-act="rc" data-cmd="wake">Wake screens (30 min)</button><button class="btn" data-act="rc" data-cmd="sleep">Back to schedule</button></div>
+  ${window.__remoteExtra ? window.__remoteExtra() : ''}
+  <div style="font-size:13px;color:var(--dim)">Jump to a slide</div>
+  ${all.map((s) => `<button class="btn" style="text-align:left" data-act="rc" data-cmd="goto" data-key="${esc(s.key)}">${esc(s.kicker)} · ${esc(s.title)}</button>`).join('')}`;
+}
+
+// ============================================================ save a slide
+async function captureStage() {
+  if (!window.html2canvas) throw new Error('The picture tool did not load. Check the internet connection and reload.');
+  const st = $('#stage');
+  const keep = st.style.transform;
+  st.classList.add('capture');
+  st.style.transform = 'none';
+  try {
+    await document.fonts?.ready;
+    return await window.html2canvas(st, { backgroundColor: '#08141e', scale: 1, width: 1920, height: 1080, windowWidth: 1920, windowHeight: 1080, logging: false, useCORS: true, ignoreElements: (el) => el.id === 'hud' || el.id === 'manage' });
+  } finally { st.style.transform = keep; st.classList.remove('capture'); }
+}
+async function saveSlide(fmt) {
+  const sc = S.scenes[S.idx];
+  const name = `ERRS-Lab-Wall-${slug(sc?.title || 'slide')}-${new Date().toISOString().slice(0, 10)}.${fmt}`;
+  setPaused(true);
+  toast('Preparing the slide…', 1500);
+  try {
+    const canvas = await captureStage();
+    let blob;
+    if (fmt === 'pdf') {
+      const PDF = window.jspdf?.jsPDF;
+      if (!PDF) throw new Error('The PDF tool did not load. Check the internet connection and reload.');
+      const doc = new PDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'] });
+      doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1920, 1080);
+      doc.setProperties({ title: sc?.title || 'ERRS Lab Wall slide', creator: 'ERRS Lab Wall' });
+      blob = doc.output('blob');
+    } else blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
+    if (window.__saveFile) { await window.__saveFile(name, blob); return; }
+    const dl = await (window.claude?.use ? window.claude.use('downloads').catch(() => null) : null);
+    if (dl) { await dl.save({ filename: name, data: blob }); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+  } catch (e) {
+    if (e?.code !== 'declined') toast(e?.message || 'Could not save the slide.');
+  }
+}
+
 // =============================================================== player
 function fitStage() {
   const wrap = $('#wrap');
@@ -970,6 +1208,7 @@ function rebuild() {
   const i = S.scenes.findIndex((s) => s.key === keep);
   renderTicker();
   renderDots();
+  updateNight();
   $('#wallTitle').textContent = S.config.title || DEFAULT_CONFIG.title;
   $('#wallSub').textContent = S.config.subtitle || DEFAULT_CONFIG.subtitle;
   $('#liveTxt').textContent = `LIVE · ${M.count} REPORT${M.count === 1 ? '' : 'S'}`;
@@ -995,6 +1234,7 @@ function show(i) {
   countUp(el);
   renderDots();
   S.tDur = sc.durMs || (S.config.seconds || 16) * (sc.dur || 1) * 1000;
+  reportScene();
   if (sc.mount) { try { S.sceneCleanup = sc.mount(el, S.tDur); } catch (e) { console.error(e); } }
   S.tStart = performance.now();
   S.elapsedBeforePause = 0;
@@ -1022,18 +1262,23 @@ function countUp(root) {
   }
 }
 function loop(t) {
-  if (!S.paused && S.scenes.length > 1) {
+  if (!S.paused && !S.night && S.scenes.length > 1) {
     const f = (t - S.tStart) / S.tDur;
     $('#prog').style.width = clamp(f * 100, 0, 100) + '%';
     if (f >= 1) show(S.idx + 1);
   }
   requestAnimationFrame(loop);
 }
+function reportScene() { // lets the Windows app's phone remote show what is on screen
+  if (!window.__onSceneChange) return;
+  try { window.__onSceneChange({ key: S.key, paused: S.paused, title: S.config.title || DEFAULT_CONFIG.title, scenes: S.scenes.map((s) => ({ key: s.key, label: `${s.kicker} · ${s.title}` })) }); } catch { /* ignore */ }
+}
 function setPaused(p) {
   if (p && !S.paused) S.pausedAt = performance.now();
   if (!p && S.paused) S.tStart += performance.now() - (S.pausedAt || performance.now());
   S.paused = p;
   $('#playIcon').setAttribute('d', p ? 'M8 5l11 7-11 7z' : 'M7 5h4v14H7zM13 5h4v14h-4z');
+  reportScene();
 }
 function renderDots() {
   const d = $('#dots');
@@ -1052,6 +1297,7 @@ function tickClock() {
   const d = new Date();
   $('#clkTime').textContent = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
   $('#clkDate').textContent = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  updateNight();
 }
 
 // ================================================================== HUD
@@ -1092,6 +1338,7 @@ function renderPane() {
   else if (S.tab === 'notices') p.innerHTML = paneNotices();
   else if (S.tab === 'photos') p.innerHTML = panePhotos();
   else if (S.tab === 'samples') p.innerHTML = paneSamples();
+  else if (S.tab === 'remote') p.innerHTML = paneRemote();
   else if (S.tab === 'computer' && window.__desktopPane) { p.innerHTML = window.__desktopPane.render(); window.__desktopPane.wire(p); }
   else p.innerHTML = paneAsk();
   if (S.tab === 'upload') wireDrop();
@@ -1167,6 +1414,9 @@ function paneDisplay() {
   <label class="f">Subtitle<input id="cSub" value="${esc(S.config.subtitle || '')}"></label>
   <label class="f">Seconds per slide: <b id="secOut" style="color:var(--ink)">${S.config.seconds || 16}</b><input id="cSec" type="range" min="8" max="45" value="${S.config.seconds || 16}"></label>
   <div><div style="font-size:13px;color:var(--dim);margin-bottom:8px">Slides in the rotation</div>${all.map((s) => `<label class="switch" style="margin-bottom:8px"><input type="checkbox" data-scene="${esc(s.key)}" ${hidden.has(s.key) ? '' : 'checked'}>${esc(s.kicker)} · ${esc(s.title)}</label>`).join('')}</div>
+  <div class="rep"><label class="switch"><input type="checkbox" id="schOn" ${schedule().on ? 'checked' : ''}>Office hours: show only a clock outside working hours</label>
+    <div class="two"><label class="f">Opens<input id="schStart" type="time" value="${esc(schedule().start)}"></label><label class="f">Closes<input id="schEnd" type="time" value="${esc(schedule().end)}"></label></div>
+    <div class="row" style="gap:6px">${[1, 2, 3, 4, 5, 6, 0].map((d) => `<label class="switch" style="font-size:13px"><input type="checkbox" data-day="${d}" ${schedule().days.includes(d) ? 'checked' : ''}>${DAY_NAMES[d].slice(0, 3)}</label>`).join('')}</div></div>
   <label class="f">Extra ticker messages, one per line<textarea id="cTick" placeholder="Welcome to the ERRS laboratory">${esc((S.config.ticker || []).join('\n'))}</textarea></label>
   <div class="row"><button class="btn pri" data-act="saveDisplay" ${S.db && S.canWrite !== false ? '' : 'disabled'}>Save for every screen</button></div>
   <div class="note" style="background:rgba(60,198,216,.08);border-color:rgba(60,198,216,.35);color:#bfeaf0">${window.desktop ? 'On the big screen: leave the app running in full screen. It updates by itself when a report is added, including from other computers that share the same data folder.' : 'On the big screen: open this page in the TV or PC browser, press Full screen, and leave it. It updates by itself when someone uploads a report.'} Keys: ← → change slide, space pauses, F full screen.</div>`;
@@ -1181,7 +1431,7 @@ function buildScenesAll() {
 function paneAsk() {
   return `${capNote()}<div style="color:var(--dim);font-size:14px;line-height:1.5">Ask Claude about the reports on the wall: comparisons between quarters, which outputs need attention, what the lab results show.</div>
   <label class="f">Question<textarea id="askQ" placeholder="Which annual outputs are furthest behind, and what would close the gap?"></textarea></label>
-  <div class="row"><button class="btn pri" data-act="ask" ${S.sample ? '' : 'disabled'}>Ask</button><button class="btn" data-act="brief" ${S.sample ? '' : 'disabled'}>Write ticker headlines</button><button class="btn" data-act="stopAsk">Stop</button></div>
+  <div class="row"><button class="btn pri" data-act="ask" ${S.sample ? '' : 'disabled'}>Ask</button><button class="btn" data-act="brief" ${S.sample ? '' : 'disabled'}>Write ticker headlines</button><button class="btn" data-act="genInsights" ${S.sample && S.db ? '' : 'disabled'}>Update the insights slide</button><button class="btn" data-act="stopAsk">Stop</button></div>
   ${S.sample ? '' : '<div class="note">Claude is not available in this view.</div>'}
   <div class="answer" id="askOut" aria-live="polite">${esc(S.lastAnswer || '')}</div>
   <div class="row" id="askAct" ${S.lastLines?.length ? '' : 'hidden'}><button class="btn" data-act="addTicker" ${S.db && S.canWrite !== false ? '' : 'disabled'}>Add these to the ticker</button></div>`;
@@ -1480,6 +1730,7 @@ async function publishJob(j, card) {
   try {
     await S.db.collection('reports').doc(id).set(d);
     j.stage = 'saved'; j.savedTitle = d.title; j.doc = null;
+    setTimeout(() => { if (!S.insightsBusy) genInsights(true); }, 1500); // refresh the insights slide in the background
     renderPane();
     toast(`“${d.title}” is on the wall.`);
   } catch (e) {
@@ -1575,10 +1826,16 @@ document.addEventListener('click', async (e) => {
   }
   if (act === 'saveDisplay') {
     const hidden = [...document.querySelectorAll('[data-scene]')].filter((c) => !c.checked).map((c) => c.dataset.scene);
-    await saveConfig({ title: $('#cTitle').value.trim() || DEFAULT_CONFIG.title, subtitle: $('#cSub').value.trim(), seconds: +$('#cSec').value, hidden, ticker: $('#cTick').value.split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 20) });
+    const days = [...document.querySelectorAll('[data-day]')].filter((c) => c.checked).map((c) => +c.dataset.day);
+    const sched = { on: $('#schOn').checked, start: $('#schStart').value || '08:00', end: $('#schEnd').value || '17:00', days };
+    await saveConfig({ schedule: sched, title: $('#cTitle').value.trim() || DEFAULT_CONFIG.title, subtitle: $('#cSub').value.trim(), seconds: +$('#cSec').value, hidden, ticker: $('#cTick').value.split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 20) });
   }
   if (act === 'ask') ask(false);
   if (act === 'brief') ask(true);
+  if (act === 'genInsights') { t.disabled = true; t.textContent = 'Claude is writing…'; await genInsights(false); t.disabled = false; t.textContent = 'Update the insights slide'; }
+  if (act === 'rc') sendRemote(t.dataset.cmd, t.dataset.key);
+  if (act === 'wake') remoteCmd('wake');
+  if (act === 'savePng' || act === 'savePdf') { $('#saveMenu')?.remove(); saveSlide(act === 'savePdf' ? 'pdf' : 'png'); }
   if (act === 'stopAsk') S.askCtl?.abort();
   if (act === 'addTicker' && S.lastLines?.length) await saveConfig({ ticker: [...(S.config.ticker || []), ...S.lastLines].slice(-20) });
 });
@@ -1598,6 +1855,15 @@ function wireHud() {
   $('#bNext').onclick = () => show(S.idx + 1);
   $('#bPlay').onclick = () => setPaused(!S.paused);
   $('#bFull').onclick = () => { toggleFull(); keepAwake(); };
+  $('#bSave').onclick = (e) => {
+    e.stopPropagation();
+    if ($('#saveMenu')) { $('#saveMenu').remove(); return; }
+    const m = document.createElement('div');
+    m.id = 'saveMenu';
+    m.innerHTML = '<button data-act="savePng">Save this slide as a picture (PNG)</button><button data-act="savePdf">Save this slide as a PDF</button>';
+    $('#hud').appendChild(m);
+  };
+  document.addEventListener('pointerdown', (e) => { if ($('#saveMenu') && !e.target.closest('#saveMenu,#bSave')) $('#saveMenu').remove(); });
   $('#bManage').onclick = () => ($('#manage').hidden ? openManage() : closeManage());
   $('#mClose').onclick = closeManage;
   addEventListener('pointermove', pokeHud, { passive: true });
@@ -1637,6 +1903,11 @@ async function connect() {
       if (!$('#manage').hidden && S.tab === name) { const p = $('#pane'); const f = p.querySelector('input:focus,textarea:focus'); if (!f || !f.value) { renderPane(); if (S.focusAfter) { $('#' + S.focusAfter)?.focus(); S.focusAfter = null; } } }
     }, (err) => console.warn(name + ' feed stopped', err));
   }
+  db.doc('config/insights').onSnapshot((snap) => {
+    S.insights = snap.exists ? snap.data() : null;
+    if (S.loaded) rebuild();
+  }, () => {});
+  db.doc('config/remote').onSnapshot((snap) => onRemoteDoc(snap.exists ? snap.data() : null), () => {});
   db.doc('config/wall').onSnapshot((snap) => {
     S.config = { ...DEFAULT_CONFIG, ...(snap.exists ? snap.data() : {}) };
     if (S.loaded) rebuild();
@@ -1654,5 +1925,5 @@ rebuild();
 requestAnimationFrame(loop);
 pokeHud();
 connect();
-window.__wall = { S, buildModel, buildScenes, show };
+window.__wall = { S, buildModel, buildScenes, show, remote: remoteCmd, saveSlide, studyIndices, genInsights, toast };
 })();

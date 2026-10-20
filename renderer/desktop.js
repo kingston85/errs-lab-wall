@@ -18,9 +18,9 @@
     return {
       id,
       get: async () => { const d = await D.get(col, id); return { exists: !!d, id, data: () => d || undefined }; },
-      set: (data) => D.set(col, id, JSON.parse(JSON.stringify(data))),
-      update: (patch) => D.update(col, id, JSON.parse(JSON.stringify(patch))),
-      delete: () => D.del(col, id),
+      set: (data) => D.set(col, id, JSON.parse(JSON.stringify(data))).then((r) => { sync?.onLocalWrite(col, id); return r; }),
+      update: (patch) => D.update(col, id, JSON.parse(JSON.stringify(patch))).then((r) => { sync?.onLocalWrite(col, id); return r; }),
+      delete: () => D.del(col, id).then((r) => { sync?.onLocalWrite(col, id); return r; }),
       onSnapshot(fn, onErr) {
         const run = () => D.get(col, id).then((d) => fn({ exists: !!d, id, data: () => d || undefined }), (e) => onErr && onErr(e));
         run();
@@ -76,7 +76,9 @@
     async upload(blob, opts = {}) {
       const type = opts.type || blob.type;
       const bytes = new Uint8Array(await blob.arrayBuffer());
-      return D.putBlob(bytes, type);
+      const r = await D.putBlob(bytes, type);
+      sync?.onLocalFile(r.id);
+      return r;
     },
     delete: (id) => D.delBlob(id),
     list: async () => ({ assets: [], usage: {} }),
@@ -84,6 +86,34 @@
 
   // ---------------------------------------------------------------- user
   const user = { can: async () => true, canEdit: () => true, isOwner: () => true, id: async () => 'local', me: async () => ({ id: 'local', name: 'This computer' }) };
+
+  // ------------------------------------------------------------ live sync
+  const sync = window.WallSync ? window.WallSync.create({
+    list: (col) => D.list(col),
+    get: (col, id) => D.get(col, id),
+    put: (col, id, data) => D.set(col, id, data),
+    remove: (col, id) => D.del(col, id),
+    changed: () => {}, // the shell already reports every write
+    fileIds: () => D.blobList(),
+    getFile: async (id) => { const f = await D.blobGet(id); return f ? { type: f.type, blob: new Blob([f.bytes], { type: f.type }) } : null; },
+    putFile: async (id, type, blob) => D.blobPutId(id, new Uint8Array(await blob.arrayBuffer()), type),
+  }) : null;
+  sync?.resume();
+
+  // --------------------------------------- saving slides, updates, remote
+  window.__saveFile = async (name, blob) => { const p = await D.saveFile(name, new Uint8Array(await blob.arrayBuffer())); if (p) window.__wall?.toast?.('Saved to ' + p); };
+  let pendingUpdate = null;
+  D.onUpdate((u) => { pendingUpdate = u; window.__wall?.toast?.(`Version ${u.version} of the wall is available. Install it in Reports → Computer.`, 8000); });
+  D.getUpdate().then((u) => { pendingUpdate = u; });
+  let remoteInfo = { url: '', qr: '' };
+  D.remoteInfo().then((r) => { remoteInfo = r; });
+  D.onRemoteInfo((r) => { remoteInfo = { ...remoteInfo, ...r }; });
+  D.onRemoteCmd((cmd, key) => window.__wall?.remote(cmd, key));
+  window.__onSceneChange = (st) => D.sendRemoteState(st);
+  window.__remoteExtra = () => remoteInfo.url ? `<div class="rep" style="align-items:center;text-align:center"><b style="font-size:15px">Phone remote for this screen</b>
+    ${remoteInfo.qr ? `<img src="${remoteInfo.qr}" alt="QR code for the phone remote" style="width:220px;height:220px;border-radius:12px;background:#fff;padding:6px">` : ''}
+    <div class="mono" style="font-size:12px;overflow-wrap:anywhere">${esc(remoteInfo.url)}</div>
+    <div style="font-size:12px;color:var(--dim);line-height:1.5">Scan with a phone on the same Wi-Fi or network. If Windows asks about the firewall, allow ERRS Lab Wall on private networks.</div></div>` : '';
 
   const services = { db, sample, assets, user };
   window.claude = { use: async (name) => services[name] || null };
@@ -106,6 +136,8 @@
       <div class="mono" style="font-size:12px;color:var(--ink);overflow-wrap:anywhere;background:#071420;border:1px solid var(--line2);border-radius:8px;padding:8px 10px">${esc(s.dataDir)}</div>
       <div style="font-size:13px;color:var(--dim);line-height:1.5">Reports, notices, samples and photos are kept here as ordinary files. To show the same wall on several computers (the big screen and your office laptop), choose a folder they all share, such as a OneDrive or network folder. Each computer checks it every few seconds.</div>
       <div class="row"><button class="btn" data-dact="chooseDir">Choose folder…</button><button class="btn" data-dact="openDir">Open folder</button>${shared ? '<button class="btn" data-dact="resetDir">Use this computer only</button>' : ''}</div></div>
+    <div class="rep" id="syncBox"></div>
+    ${pendingUpdate ? `<div class="rep" style="border-color:rgba(60,198,216,.6)"><div class="tt"><b>Version ${esc(pendingUpdate.version)} is available</b><small>you have ${esc(s.version)}</small></div><div style="font-size:13px;color:var(--dim);line-height:1.5">The wall downloads the new version, installs it and restarts by itself (about a minute). Reports and settings are kept.</div><div class="row"><button class="btn pri" data-dact="update">Install now</button><span id="upProg" style="font-size:13px;color:var(--dim)"></span></div></div>` : `<div class="rep"><div class="tt"><b>Updates</b><small>version ${esc(s.version)}</small></div><div style="font-size:13px;color:var(--dim)">The wall checks for new versions every few hours.</div><div class="row"><button class="btn" data-dact="checkUpdate">Check now</button></div></div>`}
     <div class="rep"><div class="tt"><b>Backup and move data</b></div>
       <div style="font-size:13px;color:var(--dim);line-height:1.5">Save everything on the wall (reports, notices, samples, photos and original PDFs) as one backup file. Open that file in the wall on another computer or in the Android app to copy the data there. Opening a backup adds its items and replaces items with the same name; nothing else is deleted.</div>
       <div class="row"><button class="btn" data-dact="export">Save backup…</button><button class="btn" data-dact="import">Open backup…</button></div></div>
@@ -117,7 +149,9 @@
     <div style="font-size:12px;color:var(--dim)">ERRS Lab Wall ${esc(s.version)} · ${esc(s.computer)}</div>`;
   }
   async function refresh(p) { cur = await D.settings(); p.innerHTML = render(); wire(p); }
+  let unsubSync = null;
   function wire(p) {
+    if (sync) { unsubSync?.(); unsubSync = window.WallSync.mountSettings(sync, esc, note); }
     p.querySelectorAll('[data-dact]').forEach((b) => b.addEventListener('click', async () => {
       const act = b.dataset.dact;
       try {
@@ -132,7 +166,9 @@
         else if (act === 'resetDir') { await D.resetDir(); await refresh(p); note('The wall now uses this computer\'s own folder.', true); }
         else if (act === 'openDir') await D.openDir();
         else if (act === 'export') { b.disabled = true; note('Saving…', true); const r = await D.exportBackup(); b.disabled = false; note(r ? `Saved ${r.docs} items and ${r.files} files to ${r.path}` : '', true); }
-        else if (act === 'import') { b.disabled = true; const r = await D.importBackup(); b.disabled = false; if (r) note(`Added ${r.docs} items and ${r.files} files from the backup.`, true); }
+        else if (act === 'import') { b.disabled = true; const r = await D.importBackup(); b.disabled = false; if (r) { note(`Added ${r.docs} items and ${r.files} files from the backup.`, true); sync?.pushAll(); } }
+        else if (act === 'checkUpdate') { b.disabled = true; note('Checking…', true); const u = await D.checkUpdate(); pendingUpdate = u; await refresh(p); note(u ? `Version ${u.version} is available.` : 'This is the latest version.', true); }
+        else if (act === 'update') { b.disabled = true; note('Downloading the new version…', true); D.onUpdateProgress((f) => { const e = document.getElementById('upProg'); if (e) e.textContent = Math.round(f * 100) + '%'; }); await D.installUpdate(); note('Installing — the wall will restart in a moment.', true); }
       } catch (e) { b.disabled = false; note(e.message || String(e)); }
     }));
     const full = document.getElementById('dFull'), auto = document.getElementById('dAuto');

@@ -28,7 +28,8 @@ head = head
   .replace(/<meta name="claude:[^>]*>\s*/g, '');
 if (/googleapis|cdnjs/.test(head)) throw new Error('remote reference left in head');
 
-const connect = MOBILE ? "'self' https://api.anthropic.com" : "'self'";
+const FIREBASE = "https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com";
+const connect = MOBILE ? `'self' https://api.anthropic.com https://api.github.com ${FIREBASE}` : `'self' ${FIREBASE}`;
 const csp = `default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; worker-src 'self' blob:; connect-src ${connect}`;
 const shim = MOBILE ? 'mobile.js' : 'desktop.js';
 const html = `<!doctype html>
@@ -43,6 +44,12 @@ ${head}
 ${body}
 <script src="lib/jszip.min.js"></script>
 <script src="lib/pdf.min.js"></script>
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="lib/firebase-app-compat.js"></script>
+<script src="lib/firebase-auth-compat.js"></script>
+<script src="lib/firebase-firestore-compat.js"></script>
+<script src="sync.js"></script>
 <script src="${shim}"></script>
 <script src="app.js"></script>
 </body>
@@ -50,7 +57,8 @@ ${body}
 `;
 
 if (!MOBILE) {
-  fs.mkdirSync(R('renderer'), { recursive: true });
+  fs.mkdirSync(R('renderer/lib'), { recursive: true });
+  for (const f of ['firebase-app-compat.js', 'firebase-auth-compat.js', 'firebase-firestore-compat.js']) fs.copyFileSync(R('node_modules/firebase', f), R('renderer/lib', f));
   fs.writeFileSync(R('renderer/index.html'), html);
   fs.writeFileSync(R('renderer/app.js'), app);
   console.log('renderer built:', html.length, 'bytes html,', app.length, 'bytes js');
@@ -69,6 +77,10 @@ fs.writeFileSync(path.join(OUT, 'mobile.js'), fs.readFileSync(R('mobile/src/mobi
 fs.copyFileSync(path.join(NM, 'pdfjs-dist/build/pdf.min.js'), path.join(OUT, 'lib/pdf.min.js'));
 fs.copyFileSync(path.join(NM, 'pdfjs-dist/build/pdf.worker.min.js'), path.join(OUT, 'lib/pdf.worker.min.js'));
 fs.copyFileSync(path.join(NM, 'jszip/dist/jszip.min.js'), path.join(OUT, 'lib/jszip.min.js'));
+fs.copyFileSync(path.join(NM, 'html2canvas/dist/html2canvas.min.js'), path.join(OUT, 'lib/html2canvas.min.js'));
+fs.copyFileSync(path.join(NM, 'jspdf/dist/jspdf.umd.min.js'), path.join(OUT, 'lib/jspdf.umd.min.js'));
+for (const f of ['firebase-app-compat.js', 'firebase-auth-compat.js', 'firebase-firestore-compat.js']) fs.copyFileSync(path.join(NM, 'firebase', f), path.join(OUT, 'lib', f));
+fs.copyFileSync(R('shared/sync.js'), path.join(OUT, 'sync.js'));
 for (const [f, ws] of Object.entries(fonts)) {
   const src = path.join(NM, '@fontsource', f);
   fs.mkdirSync(path.join(OUT, 'fonts', f, 'files'), { recursive: true });
